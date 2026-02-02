@@ -1,0 +1,96 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        x:Class="StadiumCompany.Views.AnswerEditorWindow"
+        Title="Nouvelle reponse"
+        Width="480" Height="340"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        Background="{DynamicResource AppBackgroundAltBrush}">
+
+    <Grid Margin="28,22">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10">
+            <ui:SymbolIcon Symbol="Comment"
+                           FontSize="20"
+                           Foreground="{DynamicResource AccentBrush}"/>
+            <TextBlock x:Name="TitleText"
+                       Text="Nouvelle reponse"
+                       FontSize="18"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextPrimaryBrush}"
+                       VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Form in a card -->
+        <Border Grid.Row="1"
+                Background="{DynamicResource CardBackgroundBrush}"
+                CornerRadius="12"
+                Padding="22,20"
+                Margin="0,18,0,0">
+            <StackPanel Spacing="16">
+
+                <!-- Answer text -->
+                <StackPanel Spacing="6">
+                    <TextBlock x:Name="LblAnswerText" Text="Texte de la reponse" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <TextBox x:Name="TxtLabel"
+                             Watermark="Saisissez la reponse..."
+                             Height="42"
+                             CornerRadius="8"/>
+                </StackPanel>
+
+                <!-- Is correct and Weight on same row -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <CheckBox x:Name="ChkCorrect"
+                              Grid.Column="0"
+                              Content="Reponse correcte"
+                              VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" Spacing="6">
+                        <TextBlock x:Name="LblWeight" Text="Poids (points)" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <NumericUpDown x:Name="NumWeight"
+                                       Width="130"
+                                       Minimum="-100"
+                                       Maximum="100"
+                                       Increment="0.01"
+                                       FormatString="F2"
+                                       Value="0"
+                                       HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Grid>
+
+            </StackPanel>
+        </Border>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,18,0,0"
+                    Spacing="12">
+            <Button x:Name="BtnCancel" Content="Annuler"
+                    Padding="24,10"
+                    CornerRadius="8"
+                    Click="BtnCancel_Click"/>
+            <Button x:Name="BtnSave" Content="Enregistrer"
+                    Padding="24,10"
+                    CornerRadius="8"
+                    FontWeight="SemiBold"
+                    Classes="accent"
+                    Click="BtnSave_Click"/>
+        </StackPanel>
+
+    </Grid>
+
+</Window>

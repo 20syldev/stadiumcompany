@@ -1,0 +1,214 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        x:Class="StadiumCompany.Views.QuizPlayerWindow"
+        Title="Quiz"
+        Width="800" Height="650"
+        MinWidth="650" MinHeight="500"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource AppBackgroundAltBrush}">
+
+    <Grid Margin="30,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Demo mode banner (keeps fixed amber colors) -->
+        <Border x:Name="PnlDemoBanner"
+                Grid.Row="0"
+                Background="#fef3c7"
+                BorderBrush="#f59e0b"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="14,8"
+                Margin="0,0,0,12"
+                IsVisible="False">
+            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                <ui:SymbolIcon Symbol="Important" FontSize="16" Foreground="#d97706"/>
+                <TextBlock x:Name="TxtDemoBanner"
+                           Text="Mode demo — Apercu du questionnaire"
+                           FontSize="13"
+                           FontWeight="SemiBold"
+                           Foreground="#92400e"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Header -->
+        <Border Grid.Row="1"
+                Background="{DynamicResource CardBackgroundBrush}"
+                CornerRadius="12"
+                Padding="20,14">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Spacing="4">
+                    <TextBlock x:Name="TxtQuizName"
+                               Text="Quiz"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock x:Name="TxtTheme"
+                               FontSize="13"
+                               Foreground="{DynamicResource TextTertiaryBrush}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <ui:SymbolIcon Symbol="Help" FontSize="16" Foreground="{DynamicResource AccentBrush}"/>
+                    <TextBlock x:Name="TxtProgress"
+                               Text="Question 1/5"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource AccentBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Question content -->
+        <Border Grid.Row="2"
+                Margin="0,12,0,0"
+                Background="{DynamicResource CardBackgroundBrush}"
+                CornerRadius="12"
+                Padding="24,16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Question -->
+                <StackPanel Grid.Row="0" Spacing="6" Margin="0,0,0,14">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <Border Background="{DynamicResource AccentBrush}"
+                                CornerRadius="8"
+                                Padding="10,6"
+                                MinWidth="40"
+                                HorizontalAlignment="Left">
+                            <TextBlock x:Name="TxtQuestionNumber"
+                                       Text="1"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"/>
+                        </Border>
+                        <TextBlock x:Name="TxtQuestionType"
+                                   Text="Vrai/Faux"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource TextTertiaryBrush}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <TextBlock x:Name="TxtQuestionLabel"
+                               Text="Question..."
+                               FontSize="15"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextPrimaryBrush}"
+                               TextWrapping="Wrap"
+                               Margin="0,6,0,0"/>
+                </StackPanel>
+
+                <!-- Answers -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="PnlAnswers" Spacing="6">
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- Results panel (hidden by default) -->
+        <Border x:Name="PnlResults"
+                Grid.Row="2"
+                Margin="0,12,0,0"
+                Background="{DynamicResource CardBackgroundBrush}"
+                CornerRadius="12"
+                Padding="30"
+                IsVisible="False">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
+                <ui:SymbolIcon x:Name="IconResult" Symbol="Accept" FontSize="64" Foreground="{DynamicResource SuccessBrush}"/>
+                <TextBlock x:Name="TxtResultsTitle"
+                           Text="Quiz termine !"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           HorizontalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
+                    <TextBlock x:Name="TxtScoreLabel"
+                               Text="Score :"
+                               FontSize="18"
+                               Foreground="{DynamicResource TextTertiaryBrush}"
+                               VerticalAlignment="Center"/>
+                    <TextBlock x:Name="TxtScore"
+                               Text="0/0"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource AccentBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                <TextBlock x:Name="TxtScorePercent"
+                           Text="100%"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource SuccessBrush}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Navigation buttons -->
+        <Grid Grid.Row="3" Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="BtnPrevious"
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    Padding="20,10"
+                    CornerRadius="8"
+                    Click="BtnPrevious_Click">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ui:SymbolIcon Symbol="Back" FontSize="14"/>
+                    <TextBlock x:Name="TxtBtnPrevious" Text="Precedent"/>
+                </StackPanel>
+            </Button>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+                <Button x:Name="BtnNext"
+                        Padding="20,10"
+                        CornerRadius="8"
+                        Classes="accent"
+                        Click="BtnNext_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock x:Name="TxtBtnNext" Text="Suivant"/>
+                        <ui:SymbolIcon Symbol="Forward" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="BtnFinish"
+                        Padding="20,10"
+                        CornerRadius="8"
+                        Classes="accent"
+                        IsVisible="False"
+                        Click="BtnFinish_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock x:Name="TxtBtnFinish" Text="Terminer" FontWeight="SemiBold"/>
+                        <ui:SymbolIcon Symbol="Accept" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="BtnClose"
+                        Content="Fermer"
+                        Padding="20,10"
+                        CornerRadius="8"
+                        IsVisible="False"
+                        Click="BtnClose_Click"/>
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+
+</Window>

@@ -1,0 +1,121 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             x:Class="StadiumCompany.Views.LoginView">
+
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+        <!-- Card container - shadcn style -->
+        <Border Background="{DynamicResource CardBackgroundBrush}"
+                CornerRadius="12"
+                Padding="32,28"
+                MinWidth="360"
+                BorderBrush="{DynamicResource BorderSubtleBrush}"
+                BorderThickness="1">
+
+            <StackPanel Spacing="20">
+
+                <!-- Logo / App name -->
+                <StackPanel HorizontalAlignment="Center" Margin="0,0,0,8">
+                    <TextBlock Text="Stadium Company"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextPrimaryAltBrush}"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="TitleText"
+                               Text="Connectez-vous a votre compte"
+                               FontSize="14"
+                               Foreground="{DynamicResource TextTertiaryBrush}"
+                               HorizontalAlignment="Center"
+                               Margin="0,6,0,0"/>
+                </StackPanel>
+
+                <!-- Login field -->
+                <StackPanel Spacing="6">
+                    <TextBlock x:Name="LblEmail" Text="Email" FontSize="14" FontWeight="Medium" Foreground="{DynamicResource TextPrimaryAltBrush}"/>
+                    <TextBox x:Name="TxtLogin"
+                             Watermark="nom@exemple.com"
+                             Height="40"
+                             CornerRadius="6"
+                             FontSize="14"/>
+                </StackPanel>
+
+                <!-- Password field -->
+                <StackPanel Spacing="6">
+                    <TextBlock x:Name="LblPassword" Text="Mot de passe" FontSize="14" FontWeight="Medium" Foreground="{DynamicResource TextPrimaryAltBrush}"/>
+                    <TextBox x:Name="TxtPassword"
+                             Watermark="Entrez votre mot de passe"
+                             PasswordChar="&#x25CF;"
+                             Height="40"
+                             CornerRadius="6"
+                             FontSize="14"/>
+                </StackPanel>
+
+                <!-- First Name (register mode) -->
+                <StackPanel x:Name="PnlFirstName" Spacing="6" IsVisible="False">
+                    <TextBlock x:Name="LblFirstName" Text="Prenom" FontSize="14" FontWeight="Medium" Foreground="{DynamicResource TextPrimaryAltBrush}"/>
+                    <TextBox x:Name="TxtFirstName"
+                             Watermark="Entrez votre prenom"
+                             Height="40"
+                             CornerRadius="6"
+                             FontSize="14"/>
+                </StackPanel>
+
+                <!-- Last Name (register mode) -->
+                <StackPanel x:Name="PnlLastName" Spacing="6" IsVisible="False">
+                    <TextBlock x:Name="LblLastName" Text="Nom" FontSize="14" FontWeight="Medium" Foreground="{DynamicResource TextPrimaryAltBrush}"/>
+                    <TextBox x:Name="TxtLastName"
+                             Watermark="Entrez votre nom"
+                             Height="40"
+                             CornerRadius="6"
+                             FontSize="14"/>
+                </StackPanel>
+
+                <!-- Error message -->
+                <Border x:Name="ErrorBorder"
+                        Background="{DynamicResource ErrorBackgroundBrush}"
+                        BorderBrush="{DynamicResource ErrorBorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Padding="12,10"
+                        IsVisible="False">
+                    <TextBlock x:Name="LblError"
+                               Foreground="{DynamicResource ErrorTextBrush}"
+                               FontSize="13"
+                               TextWrapping="Wrap"/>
+                </Border>
+
+                <!-- Submit button -->
+                <Button x:Name="BtnSubmit"
+                        Content="Se connecter"
+                        Height="40"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        FontWeight="Medium"
+                        FontSize="14"
+                        CornerRadius="6"
+                        Margin="0,4,0,0"
+                        Classes="accent"
+                        Click="BtnSubmit_Click"/>
+
+                <!-- Toggle mode link -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="4">
+                    <TextBlock x:Name="TxtTogglePrompt"
+                               Text="Pas encore de compte ?"
+                               FontSize="14"
+                               Foreground="{DynamicResource TextTertiaryBrush}"
+                               VerticalAlignment="Center"/>
+                    <Button x:Name="BtnToggleMode"
+                            Content="S'inscrire"
+                            Background="Transparent"
+                            Foreground="{DynamicResource TextPrimaryAltBrush}"
+                            FontSize="14"
+                            FontWeight="Medium"
+                            Padding="4,0"
+                            Click="BtnToggleMode_Click"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+
+</UserControl>
