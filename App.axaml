@@ -1,0 +1,82 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sty="using:FluentAvalonia.Styling"
+             x:Class="StadiumCompany.App"
+             RequestedThemeVariant="Light">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#f8fafc"/>
+                    <SolidColorBrush x:Key="AppBackgroundAltBrush" Color="#f1f5f9"/>
+                    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFF"/>
+                    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#1e293b"/>
+                    <SolidColorBrush x:Key="TextPrimaryAltBrush" Color="#0f172a"/>
+                    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#334155"/>
+                    <SolidColorBrush x:Key="TextTertiaryBrush" Color="#64748b"/>
+                    <SolidColorBrush x:Key="BorderSubtleBrush" Color="#e2e8f0"/>
+                    <SolidColorBrush x:Key="AccentBrush" Color="#667eea"/>
+                    <SolidColorBrush x:Key="DangerBrush" Color="#ef4444"/>
+                    <SolidColorBrush x:Key="ErrorBackgroundBrush" Color="#fef2f2"/>
+                    <SolidColorBrush x:Key="ErrorBorderBrush" Color="#fecaca"/>
+                    <SolidColorBrush x:Key="ErrorTextBrush" Color="#dc2626"/>
+                    <SolidColorBrush x:Key="SuccessBrush" Color="#22c55e"/>
+                    <SolidColorBrush x:Key="WarningBrush" Color="#f59e0b"/>
+                    <SolidColorBrush x:Key="DataGridRowHoverBrush" Color="#08667eea"/>
+                    <SolidColorBrush x:Key="ShadowBrush" Color="#15000000"/>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="AppBackgroundBrush" Color="#1e1e2e"/>
+                    <SolidColorBrush x:Key="AppBackgroundAltBrush" Color="#181825"/>
+                    <SolidColorBrush x:Key="CardBackgroundBrush" Color="#2a2a3d"/>
+                    <SolidColorBrush x:Key="TextPrimaryBrush" Color="#e2e8f0"/>
+                    <SolidColorBrush x:Key="TextPrimaryAltBrush" Color="#f1f5f9"/>
+                    <SolidColorBrush x:Key="TextSecondaryBrush" Color="#cbd5e1"/>
+                    <SolidColorBrush x:Key="TextTertiaryBrush" Color="#94a3b8"/>
+                    <SolidColorBrush x:Key="BorderSubtleBrush" Color="#374151"/>
+                    <SolidColorBrush x:Key="AccentBrush" Color="#818cf8"/>
+                    <SolidColorBrush x:Key="DangerBrush" Color="#f87171"/>
+                    <SolidColorBrush x:Key="ErrorBackgroundBrush" Color="#3b1c1c"/>
+                    <SolidColorBrush x:Key="ErrorBorderBrush" Color="#7f1d1d"/>
+                    <SolidColorBrush x:Key="ErrorTextBrush" Color="#fca5a5"/>
+                    <SolidColorBrush x:Key="SuccessBrush" Color="#4ade80"/>
+                    <SolidColorBrush x:Key="WarningBrush" Color="#fbbf24"/>
+                    <SolidColorBrush x:Key="DataGridRowHoverBrush" Color="#15818cf8"/>
+                    <SolidColorBrush x:Key="ShadowBrush" Color="#30000000"/>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <sty:FluentAvaloniaTheme />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+
+        <!-- Hover effects pour boutons -->
+        <Style Selector="Button">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.15"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button:pointerover">
+            <Setter Property="Opacity" Value="0.85"/>
+        </Style>
+
+        <!-- Hover effects pour DataGrid rows -->
+        <Style Selector="DataGridRow:pointerover">
+            <Setter Property="Background" Value="{DynamicResource DataGridRowHoverBrush}"/>
+        </Style>
+
+        <!-- Hover effects pour MenuItem -->
+        <Style Selector="MenuItem">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.15"/>
+                </Transitions>
+            </Setter>
+        </Style>
+    </Application.Styles>
+</Application>
