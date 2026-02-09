@@ -1,0 +1,116 @@
+@page "/questionnaire/edit/{id:int}"
+@inject QuestionnaireService QuestionnaireService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@using StadiumCompany.Models
+
+<PageTitle>Éditer Questionnaire</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4">
+    <MudText Typo="Typo.h4" GutterBottom="true" Class="mb-4">
+        @(Id == 0 ? "Nouveau Questionnaire" : "Éditer Questionnaire")
+    </MudText>
+
+    @if (questionnaire == null)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+    }
+    else
+    {
+        <MudForm @ref="form" @onsubmit="SaveQuestionnaire" Model="questionnaire">
+            <MudTextField T="string" Label="Titre" @bind-Value="questionnaire.Name" Required="true" />
+
+            <MudTextField T="string" Label="Description" @bind-Value="questionnaire.Description"
+                         Lines="3" Class="mt-3" />
+
+            <MudSelect T="int" Label="Thème" @bind-Value="questionnaire.ThemeId" Required="true" Class="mt-3">
+                <MudSelectItem Value="1">Général</MudSelectItem>
+                <MudSelectItem Value="2">Science</MudSelectItem>
+                <MudSelectItem Value="3">Histoire</MudSelectItem>
+                <!-- TODO: Load from API -->
+            </MudSelect>
+
+            <MudSwitch T="bool" @bind-Value="questionnaire.Published" Label="Publié" Class="mt-3" />
+
+            <MudStack Row="true" Class="mt-4" Spacing="2">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                           Disabled="isSaving" StartIcon="@Icons.Material.Filled.Save">
+                    @if (isSaving)
+                    {
+                        <MudProgressCircular Size="Size.Small" Color="Color.Inherit" Class="me-2" />
+                        @:Sauvegarde...
+                    }
+                    else
+                    {
+                        @:Sauvegarder
+                    }
+                </MudButton>
+                <MudButton Variant="Variant.Outlined" Color="Color.Secondary" @onclick="Cancel"
+                           StartIcon="@Icons.Material.Filled.Cancel">
+                    Annuler
+                </MudButton>
+            </MudStack>
+        </MudForm>
+
+        <MudDivider Class="my-6" />
+
+        <MudText Typo="Typo.h5" GutterBottom="true" Class="mb-3">Questions</MudText>
+        <!-- TODO: List and manage questions -->
+        <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Add" @onclick="AddQuestion">
+            Ajouter une question
+        </MudButton>
+    }
+</MudContainer>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private Questionnaire? questionnaire;
+    private MudForm form = new();
+    private bool isSaving = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id > 0)
+        {
+            // Load existing questionnaire
+            // TODO: Implement GetById in service
+            questionnaire = new Questionnaire { Id = Id, Name = "Exemple", Description = "Description exemple" };
+        }
+        else
+        {
+            // New questionnaire
+            questionnaire = new Questionnaire { UserId = 1 }; // TODO: Get from auth
+        }
+    }
+
+    private async Task SaveQuestionnaire()
+    {
+        if (questionnaire == null) return;
+
+        isSaving = true;
+        try
+        {
+            // TODO: Call save API
+            Snackbar.Add("Questionnaire sauvegardé !", Severity.Success);
+            Navigation.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("Erreur lors de la sauvegarde", Severity.Error);
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/");
+    }
+
+    private void AddQuestion()
+    {
+        // TODO: Navigate to add question
+    }
+}

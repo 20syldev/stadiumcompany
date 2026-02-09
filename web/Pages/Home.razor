@@ -1,0 +1,129 @@
+﻿@page "/"
+@inject QuestionnaireService QuestionnaireService
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@using StadiumCompany.Models
+
+<PageTitle>Stadium Company Web</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudText Typo="Typo.h3" GutterBottom="true" Class="mb-4">Mes Questionnaires</MudText>
+
+    <MudStack Row="true" Class="mb-4" Spacing="2">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" @onclick="CreateNewQuestionnaire">
+            Nouveau Questionnaire
+        </MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Refresh" @onclick="Refresh">
+            Actualiser
+        </MudButton>
+    </MudStack>
+
+    @if (questionnaires == null)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+    }
+    else if (!questionnaires.Any())
+    {
+        <MudAlert Severity="Severity.Info" Class="mt-4">
+            Aucun questionnaire trouvé. Créez-en un nouveau !
+        </MudAlert>
+    }
+    else
+    {
+        <MudGrid Spacing="3">
+            @foreach (var q in questionnaires)
+            {
+                <MudItem xs="12" sm="6" md="4">
+                    <MudCard Elevation="4" Class="h-100">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h5">@q.Name</MudText>
+                            </CardHeaderContent>
+                            <CardHeaderActions>
+                                <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small">
+                                    <MudMenuItem @onclick="() => EditQuestionnaire(q)">Éditer</MudMenuItem>
+                                    <MudMenuItem @onclick="() => PlayQuiz(q)">Jouer</MudMenuItem>
+                                    <MudMenuItem @onclick="() => DeleteQuestionnaire(q)">Supprimer</MudMenuItem>
+                                </MudMenu>
+                            </CardHeaderActions>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudText>@q.Description</MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mt-2">
+                                Thème: @q.Theme?.Label
+                            </MudText>
+                            <MudChip T="string" Color="Color.Info" Size="Size.Small" Class="mt-2">
+                                @q.QuestionCount question(s)
+                            </MudChip>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="() => EditQuestionnaire(q)">
+                                Éditer
+                            </MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Success" @onclick="() => PlayQuiz(q)">
+                                Jouer
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+</MudContainer>
+
+@code {
+    private List<Questionnaire>? questionnaires;
+    private int currentUserId = 1; // TODO: Get from auth
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(2000); // Wait for server to be ready
+        try
+        {
+            await LoadQuestionnaires();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erreur d'initialisation : {ex.Message}", Severity.Error);
+            questionnaires = new List<Questionnaire>();
+        }
+    }
+
+    private async Task LoadQuestionnaires()
+    {
+        try
+        {
+            questionnaires = await QuestionnaireService.GetByUserAsync(currentUserId);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erreur de chargement : {ex.Message}", Severity.Error);
+            questionnaires = new List<Questionnaire>(); // Empty list to avoid null
+        }
+    }
+
+    private async Task Refresh()
+    {
+        await LoadQuestionnaires();
+    }
+
+    private void CreateNewQuestionnaire()
+    {
+        Navigation.NavigateTo("/questionnaire/edit/0");
+    }
+
+    private void EditQuestionnaire(Questionnaire q)
+    {
+        Navigation.NavigateTo($"/questionnaire/edit/{q.Id}");
+    }
+
+    private void PlayQuiz(Questionnaire q)
+    {
+        // TODO: Navigate to play page
+    }
+
+    private void DeleteQuestionnaire(Questionnaire q)
+    {
+        // TODO: Confirm and delete
+    }
+}
