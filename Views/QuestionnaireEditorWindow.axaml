@@ -3,147 +3,120 @@
         xmlns:ui="using:FluentAvalonia.UI.Controls"
         x:Class="StadiumCompany.Views.QuestionnaireEditorWindow"
         Title="Nouveau questionnaire"
-        Width="850" Height="620"
+        Width="950" Height="750"
         MinWidth="750" MinHeight="550"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource AppBackgroundAltBrush}">
 
-    <Grid Margin="30,25">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid RowDefinitions="*,Auto">
 
-        <!-- Title -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="12">
-            <ui:SymbolIcon Symbol="Edit"
-                           FontSize="24"
-                           Foreground="{DynamicResource AccentBrush}"/>
-            <TextBlock x:Name="TitleText"
-                       Text="Nouveau questionnaire"
-                       FontSize="22"
-                       FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextPrimaryBrush}"
-                       VerticalAlignment="Center"/>
-        </StackPanel>
+        <!-- Scrollable content -->
+        <ScrollViewer Grid.Row="0"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <StackPanel x:Name="RootPanel"
+                        Spacing="16"
+                        Margin="0,25,0,20"
+                        MaxWidth="800"
+                        HorizontalAlignment="Center"
+                        Width="800">
 
-        <!-- Form fields in a card -->
+                <!-- Metadata card -->
+                <Border Background="{DynamicResource CardBackgroundBrush}"
+                        CornerRadius="12"
+                        Padding="24,20"
+                        BorderBrush="{DynamicResource BorderSubtleBrush}"
+                        BorderThickness="1">
+                    <StackPanel Spacing="16">
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <ui:SymbolIcon Symbol="Edit"
+                                           FontSize="22"
+                                           Foreground="{DynamicResource AccentBrush}"/>
+                            <TextBlock x:Name="TitleText"
+                                       Text="Nouveau questionnaire"
+                                       FontSize="20"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="6">
+                            <TextBlock x:Name="LblName" Text="Nom du questionnaire"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+                            <TextBox x:Name="TxtName"
+                                     Watermark="Saisissez le nom..."
+                                     Height="42"
+                                     FontSize="16"
+                                     CornerRadius="8"/>
+                        </StackPanel>
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Grid.Column="0" Spacing="6" Margin="0,0,20,0">
+                                <TextBlock x:Name="LblTheme" Text="Theme"
+                                           FontSize="13"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <ComboBox x:Name="CmbTheme"
+                                          Height="40"
+                                          CornerRadius="8"
+                                          HorizontalAlignment="Stretch"
+                                          MaxWidth="300"/>
+                            </StackPanel>
+
+                            <CheckBox x:Name="ChkPublished"
+                                      Grid.Column="1"
+                                      Content="Publie"
+                                      VerticalAlignment="Bottom"
+                                      Margin="10,0,0,8"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Question cards container (populated in code-behind) -->
+                <StackPanel x:Name="QuestionsContainer" Spacing="12"/>
+
+                <!-- Add question button -->
+                <Button x:Name="BtnAddQuestion"
+                        HorizontalAlignment="Center"
+                        Padding="20,12"
+                        CornerRadius="10"
+                        Classes="accent"
+                        Click="BtnAddQuestion_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <ui:SymbolIcon Symbol="Add" FontSize="16"/>
+                        <TextBlock x:Name="TxtBtnAddQuestion"
+                                   Text="Ajouter une question"
+                                   FontWeight="SemiBold"
+                                   FontSize="14"/>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Bottom bar -->
         <Border Grid.Row="1"
                 Background="{DynamicResource CardBackgroundBrush}"
-                CornerRadius="12"
-                Padding="24,20"
-                Margin="0,20,0,0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.Column="0" Margin="0,0,20,0" Spacing="6">
-                    <TextBlock x:Name="LblName" Text="Nom du questionnaire" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                    <TextBox x:Name="TxtName"
-                             Watermark="Saisissez le nom..."
-                             Height="40"
-                             CornerRadius="8"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="1" Margin="0,0,20,0" Spacing="6">
-                    <TextBlock x:Name="LblTheme" Text="Theme" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                    <ComboBox x:Name="CmbTheme"
-                              Height="40"
-                              CornerRadius="8"
-                              HorizontalAlignment="Stretch"/>
-                </StackPanel>
-
-                <CheckBox x:Name="ChkPublished"
-                          Grid.Column="2"
-                          Content="Publie"
-                          VerticalAlignment="Center"
-                          Margin="10,15,0,0"/>
-            </Grid>
-        </Border>
-
-        <!-- Questions section header -->
-        <Grid Grid.Row="2" Margin="0,24,0,12">
-            <StackPanel Orientation="Horizontal" Spacing="8">
-                <ui:SymbolIcon Symbol="Help" FontSize="18" Foreground="{DynamicResource TextTertiaryBrush}"/>
-                <TextBlock x:Name="LblQuestions" Text="Questions"
-                           FontSize="16"
-                           FontWeight="SemiBold"
-                           Foreground="{DynamicResource TextSecondaryBrush}"
-                           VerticalAlignment="Center"/>
+                BorderBrush="{DynamicResource BorderSubtleBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="30,14">
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="12">
+                <Button x:Name="BtnCancel"
+                        Content="Annuler"
+                        Padding="24,10"
+                        CornerRadius="8"
+                        Click="BtnCancel_Click"/>
+                <Button x:Name="BtnSave"
+                        Content="Enregistrer"
+                        Padding="24,10"
+                        CornerRadius="8"
+                        FontWeight="SemiBold"
+                        Classes="accent"
+                        Click="BtnSave_Click"/>
             </StackPanel>
-            <Button x:Name="BtnAddQuestion"
-                    HorizontalAlignment="Right"
-                    Padding="14,8"
-                    CornerRadius="8"
-                    Classes="accent"
-                    Click="BtnAddQuestion_Click">
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                    <ui:SymbolIcon Symbol="Add" FontSize="14"/>
-                    <TextBlock x:Name="TxtBtnAddQuestion" Text="Ajouter une question"/>
-                </StackPanel>
-            </Button>
-        </Grid>
-
-        <!-- Questions DataGrid in a card -->
-        <Border Grid.Row="3"
-                Background="{DynamicResource CardBackgroundBrush}"
-                CornerRadius="12"
-                ClipToBounds="True">
-            <DataGrid x:Name="DgvQuestions"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      SelectionMode="Single"
-                      GridLinesVisibility="Horizontal"
-                      BorderThickness="0"
-                      Background="Transparent"
-                      DoubleTapped="DgvQuestions_DoubleTapped">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="N°" Binding="{Binding Number}" Width="60"/>
-                    <DataGridTextColumn Header="Question" Binding="{Binding Label}" Width="3*"/>
-                    <DataGridTextColumn Header="Type" Binding="{Binding AnswerTypeText}" Width="*"/>
-                </DataGrid.Columns>
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Editer" Click="ContextMenu_Edit">
-                            <MenuItem.Icon>
-                                <ui:SymbolIcon Symbol="Edit" FontSize="14"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="Supprimer" Click="ContextMenu_Delete">
-                            <MenuItem.Icon>
-                                <ui:SymbolIcon Symbol="Delete" FontSize="14"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-            </DataGrid>
         </Border>
-
-        <!-- Buttons -->
-        <StackPanel Grid.Row="4"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Margin="0,20,0,0"
-                    Spacing="12">
-            <Button x:Name="BtnCancel"
-                    Content="Annuler"
-                    Padding="24,10"
-                    CornerRadius="8"
-                    Click="BtnCancel_Click"/>
-            <Button x:Name="BtnSave"
-                    Content="Enregistrer"
-                    Padding="24,10"
-                    CornerRadius="8"
-                    FontWeight="SemiBold"
-                    Classes="accent"
-                    Click="BtnSave_Click"/>
-        </StackPanel>
 
     </Grid>
 
