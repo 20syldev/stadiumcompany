@@ -25,6 +25,12 @@
                     <SolidColorBrush x:Key="WarningBrush" Color="#f59e0b"/>
                     <SolidColorBrush x:Key="DataGridRowHoverBrush" Color="#08667eea"/>
                     <SolidColorBrush x:Key="ShadowBrush" Color="#15000000"/>
+                    <SolidColorBrush x:Key="CardBorderActiveBrush" Color="#667eea"/>
+                    <SolidColorBrush x:Key="CardHoverBrush" Color="#f1f5f9"/>
+                    <SolidColorBrush x:Key="BadgeBackgroundBrush" Color="#f0f1ff"/>
+                    <SolidColorBrush x:Key="BadgeTextBrush" Color="#667eea"/>
+                    <SolidColorBrush x:Key="DraftBadgeBrush" Color="#94a3b8"/>
+                    <SolidColorBrush x:Key="PublishedBadgeBrush" Color="#22c55e"/>
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="AppBackgroundBrush" Color="#1e1e2e"/>
@@ -44,6 +50,12 @@
                     <SolidColorBrush x:Key="WarningBrush" Color="#fbbf24"/>
                     <SolidColorBrush x:Key="DataGridRowHoverBrush" Color="#15818cf8"/>
                     <SolidColorBrush x:Key="ShadowBrush" Color="#30000000"/>
+                    <SolidColorBrush x:Key="CardBorderActiveBrush" Color="#818cf8"/>
+                    <SolidColorBrush x:Key="CardHoverBrush" Color="#2a2a3d"/>
+                    <SolidColorBrush x:Key="BadgeBackgroundBrush" Color="#2d2d4a"/>
+                    <SolidColorBrush x:Key="BadgeTextBrush" Color="#818cf8"/>
+                    <SolidColorBrush x:Key="DraftBadgeBrush" Color="#64748b"/>
+                    <SolidColorBrush x:Key="PublishedBadgeBrush" Color="#4ade80"/>
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
@@ -77,6 +89,39 @@
                     <BrushTransition Property="Background" Duration="0:0:0.15"/>
                 </Transitions>
             </Setter>
+        </Style>
+
+        <!-- Card hover effect -->
+        <Style Selector="Border.card-hoverable">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="BorderBrush" Duration="0:0:0.15"/>
+                    <BrushTransition Property="Background" Duration="0:0:0.15"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Border.card-hoverable:pointerover">
+            <Setter Property="BorderBrush" Value="{DynamicResource CardBorderActiveBrush}"/>
+        </Style>
+
+        <!-- Inline-edit TextBox (Google Forms style) -->
+        <Style Selector="TextBox.inline-edit">
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="4,6"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="BorderBrush" Duration="0:0:0.15"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="TextBox.inline-edit:focus">
+            <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+        </Style>
+        <Style Selector="TextBox.inline-edit:pointerover">
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderSubtleBrush}"/>
         </Style>
     </Application.Styles>
 </Application>
