@@ -115,11 +115,44 @@
             </Grid>
         </Grid>
 
+        <!-- Toggle tabs + Add button -->
+        <Grid Grid.Row="1" Margin="0,20,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Segmented toggle -->
+            <Border Grid.Column="0"
+                    Background="{DynamicResource AppBackgroundBrush}"
+                    CornerRadius="10"
+                    Padding="4"
+                    BorderBrush="{DynamicResource BorderSubtleBrush}"
+                    BorderThickness="1">
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <Button x:Name="BtnTabMine"
+                            Padding="16,8"
+                            CornerRadius="8"
+                            FontWeight="SemiBold"
+                            FontSize="13"
+                            Click="BtnTabMine_Click">
+                        <TextBlock x:Name="TxtTabMine" Text="Mes questionnaires"/>
+                    </Button>
+                    <Button x:Name="BtnTabPublished"
+                            Padding="16,8"
+                            CornerRadius="8"
+                            FontSize="13"
+                            Background="Transparent"
+                            Click="BtnTabPublished_Click">
+                        <TextBlock x:Name="TxtTabPublished" Text="Questionnaires publies"/>
+                    </Button>
+                </StackPanel>
+            </Border>
+
             <!-- Add button -->
             <Button x:Name="BtnAdd"
-                    Grid.Row="1"
-                    HorizontalAlignment="Left"
-                    Margin="0,25,0,20"
+                    Grid.Column="2"
                     Padding="16,10"
                     CornerRadius="8"
                     Classes="accent"
@@ -129,201 +162,37 @@
                     <TextBlock x:Name="TxtBtnAdd" Text="Nouveau questionnaire" FontWeight="SemiBold"/>
                 </StackPanel>
             </Button>
+        </Grid>
 
-            <!-- TabControl avec 2 onglets -->
-            <TabControl Grid.Row="2" x:Name="TabMain">
+        <!-- Cards grid -->
+        <ScrollViewer Grid.Row="2"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled">
+            <Grid>
+                <!-- Cards container -->
+                <WrapPanel x:Name="CardsContainer"
+                           Orientation="Horizontal"
+                           HorizontalAlignment="Left"/>
 
-                <!-- Onglet: Mes questionnaires -->
-                <TabItem x:Name="TabMine" Header="Mes questionnaires">
-                    <Grid Margin="0,10,0,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <Border Grid.Row="0"
-                                Background="{DynamicResource CardBackgroundBrush}"
-                                CornerRadius="12"
-                                ClipToBounds="True">
-                            <DataGrid x:Name="DgvMyQuestionnaires"
-                                      AutoGenerateColumns="False"
-                                      IsReadOnly="True"
-                                      CanUserReorderColumns="False"
-                                      CanUserResizeColumns="True"
-                                      SelectionMode="Single"
-                                      GridLinesVisibility="Horizontal"
-                                      BorderThickness="0"
-                                      Background="Transparent">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="2*"/>
-                                    <DataGridTextColumn Header="Theme" Binding="{Binding ThemeLabel}" Width="*"/>
-                                    <DataGridTextColumn Header="Questions" Binding="{Binding QuestionCount}" Width="100"/>
-                                    <DataGridTextColumn Header="Publie" Binding="{Binding PublishedText}" Width="80"/>
-                                </DataGrid.Columns>
-                                <DataGrid.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem x:Name="CtxMinePlay" Header="Jouer" Click="ContextMenu_PlayMine">
-                                            <MenuItem.Icon>
-                                                <ui:SymbolIcon Symbol="Play" FontSize="14"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem x:Name="CtxMineEdit" Header="Editer" Click="ContextMenu_Edit">
-                                            <MenuItem.Icon>
-                                                <ui:SymbolIcon Symbol="Edit" FontSize="14"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem x:Name="CtxMinePdf" Header="Synthese PDF" Click="ContextMenu_GeneratePdfMine">
-                                            <MenuItem.Icon>
-                                                <ui:SymbolIcon Symbol="Document" FontSize="14"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <Separator/>
-                                        <MenuItem x:Name="CtxMineDelete" Header="Supprimer" Click="ContextMenu_Delete">
-                                            <MenuItem.Icon>
-                                                <ui:SymbolIcon Symbol="Delete" FontSize="14"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                    </ContextMenu>
-                                </DataGrid.ContextMenu>
-                            </DataGrid>
-                        </Border>
-
-                        <!-- Action bar for selected item -->
-                        <Border x:Name="PnlMyActions"
-                                Grid.Row="1"
-                                IsVisible="False"
-                                Background="{DynamicResource CardBackgroundBrush}"
-                                CornerRadius="10"
-                                Padding="12,8"
-                                Margin="0,8,0,0"
-                                BorderBrush="{DynamicResource BorderSubtleBrush}"
-                                BorderThickness="1">
-                            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                                <Button Padding="14,8" CornerRadius="6" Classes="accent" Click="BtnActionPlay_Click">
-                                    <StackPanel Orientation="Horizontal" Spacing="6">
-                                        <ui:SymbolIcon Symbol="Play" FontSize="14"/>
-                                        <TextBlock x:Name="TxtActionPlay" Text="Jouer"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Padding="14,8" CornerRadius="6" Click="BtnActionEdit_Click">
-                                    <StackPanel Orientation="Horizontal" Spacing="6">
-                                        <ui:SymbolIcon Symbol="Edit" FontSize="14"/>
-                                        <TextBlock x:Name="TxtActionEdit" Text="Editer"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Padding="14,8" CornerRadius="6" Click="BtnActionPdf_Click">
-                                    <StackPanel Orientation="Horizontal" Spacing="6">
-                                        <ui:SymbolIcon Symbol="Document" FontSize="14"/>
-                                        <TextBlock x:Name="TxtActionPdf" Text="PDF"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Padding="14,8" CornerRadius="6" Click="BtnActionDelete_Click">
-                                    <StackPanel Orientation="Horizontal" Spacing="6">
-                                        <ui:SymbolIcon Symbol="Delete" FontSize="14" Foreground="{DynamicResource DangerBrush}"/>
-                                        <TextBlock x:Name="TxtActionDelete" Text="Supprimer" Foreground="{DynamicResource DangerBrush}"/>
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-                </TabItem>
-
-                <!-- Onglet: Questionnaires publies -->
-                <TabItem x:Name="TabPublished" Header="Questionnaires publies">
-                    <Grid Margin="0,10,0,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <Border Grid.Row="0"
-                                Background="{DynamicResource CardBackgroundBrush}"
-                                CornerRadius="12"
-                                ClipToBounds="True">
-                            <DataGrid x:Name="DgvPublishedQuestionnaires"
-                                      AutoGenerateColumns="False"
-                                      IsReadOnly="True"
-                                      CanUserReorderColumns="False"
-                                      CanUserResizeColumns="True"
-                                      SelectionMode="Single"
-                                      GridLinesVisibility="Horizontal"
-                                      BorderThickness="0"
-                                      Background="Transparent">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Nom" Binding="{Binding Name}" Width="2*"/>
-                                    <DataGridTextColumn Header="Theme" Binding="{Binding ThemeLabel}" Width="*"/>
-                                    <DataGridTextColumn Header="Auteur" Binding="{Binding OwnerName}" Width="*"/>
-                                    <DataGridTextColumn Header="Questions" Binding="{Binding QuestionCount}" Width="100"/>
-                                </DataGrid.Columns>
-                                <DataGrid.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem x:Name="CtxPubPlay" Header="Jouer" Click="ContextMenu_Play">
-                                            <MenuItem.Icon>
-                                                <ui:SymbolIcon Symbol="Play" FontSize="14"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem x:Name="CtxPubView" Header="Voir" Click="ContextMenu_View">
-                                            <MenuItem.Icon>
-                                                <ui:SymbolIcon Symbol="View" FontSize="14"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem x:Name="CtxPubFork" Header="Dupliquer" Click="ContextMenu_Fork">
-                                            <MenuItem.Icon>
-                                                <ui:SymbolIcon Symbol="Copy" FontSize="14"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <Separator/>
-                                        <MenuItem x:Name="CtxPubPdf" Header="Synthese PDF" Click="ContextMenu_GeneratePdf">
-                                            <MenuItem.Icon>
-                                                <ui:SymbolIcon Symbol="Document" FontSize="14"/>
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                    </ContextMenu>
-                                </DataGrid.ContextMenu>
-                            </DataGrid>
-                        </Border>
-
-                        <!-- Action bar for selected published item -->
-                        <Border x:Name="PnlPubActions"
-                                Grid.Row="1"
-                                IsVisible="False"
-                                Background="{DynamicResource CardBackgroundBrush}"
-                                CornerRadius="10"
-                                Padding="12,8"
-                                Margin="0,8,0,0"
-                                BorderBrush="{DynamicResource BorderSubtleBrush}"
-                                BorderThickness="1">
-                            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                                <Button Padding="14,8" CornerRadius="6" Classes="accent" Click="BtnActionPlayPub_Click">
-                                    <StackPanel Orientation="Horizontal" Spacing="6">
-                                        <ui:SymbolIcon Symbol="Play" FontSize="14"/>
-                                        <TextBlock x:Name="TxtActionPlayPub" Text="Jouer"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Padding="14,8" CornerRadius="6" Click="BtnActionViewPub_Click">
-                                    <StackPanel Orientation="Horizontal" Spacing="6">
-                                        <ui:SymbolIcon Symbol="View" FontSize="14"/>
-                                        <TextBlock x:Name="TxtActionView" Text="Voir"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Padding="14,8" CornerRadius="6" Click="BtnActionForkPub_Click">
-                                    <StackPanel Orientation="Horizontal" Spacing="6">
-                                        <ui:SymbolIcon Symbol="Copy" FontSize="14"/>
-                                        <TextBlock x:Name="TxtActionFork" Text="Dupliquer"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Padding="14,8" CornerRadius="6" Click="BtnActionPdfPub_Click">
-                                    <StackPanel Orientation="Horizontal" Spacing="6">
-                                        <ui:SymbolIcon Symbol="Document" FontSize="14"/>
-                                        <TextBlock x:Name="TxtActionPdfPub" Text="PDF"/>
-                                    </StackPanel>
-                                </Button>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
-                </TabItem>
-
-            </TabControl>
+                <!-- Empty state -->
+                <StackPanel x:Name="EmptyState"
+                            IsVisible="False"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Spacing="12">
+                    <ui:SymbolIcon Symbol="Library"
+                                   FontSize="48"
+                                   Foreground="{DynamicResource TextTertiaryBrush}"
+                                   HorizontalAlignment="Center"
+                                   Opacity="0.5"/>
+                    <TextBlock x:Name="TxtEmptyState"
+                               Text="Aucun questionnaire."
+                               FontSize="16"
+                               Foreground="{DynamicResource TextTertiaryBrush}"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 
 </UserControl>
