@@ -31,7 +31,8 @@ public class UserRepository
         using var connection = Database.GetConnection();
         connection.Open();
 
-        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password)
+            .Replace("$2a$", "$2y$");
 
         var query = @"INSERT INTO users (email, password, last_name, first_name)
                       VALUES (@email, @password, @lastName, @firstName)";
