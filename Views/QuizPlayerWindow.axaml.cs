@@ -1,6 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Media;
 using FluentAvalonia.UI.Controls;
 using StadiumCompany.Models;
 using StadiumCompany.Services;
@@ -12,14 +15,22 @@ public partial class QuizPlayerWindow : Window
     private readonly Questionnaire _questionnaire;
     private readonly List<Question> _questions;
     private int _currentIndex = 0;
-    private readonly Dictionary<int, List<int>> _selectedAnswers = new();
+    private readonly Dictionary<int, List<int>> _selectedAnswers = [];
     private readonly bool _isDemoMode;
+
+    private static IBrush Res(string key)
+    {
+        var app = Application.Current!;
+        if (app.TryFindResource(key, app.ActualThemeVariant, out var value) && value is IBrush brush)
+            return brush;
+        return Brushes.Transparent;
+    }
 
     public QuizPlayerWindow()
     {
         InitializeComponent();
         _questionnaire = null!;
-        _questions = new List<Question>();
+        _questions = [];
     }
 
     public QuizPlayerWindow(Questionnaire questionnaire, bool isDemoMode = false)
@@ -101,9 +112,12 @@ public partial class QuizPlayerWindow : Window
             ? loc.T("question.type_truefalse")
             : loc.T("question.type_multiple");
 
+        // Update progress bar
+        UpdateProgressBar();
+
         PnlAnswers.Children.Clear();
 
-        var selectedIds = _selectedAnswers.GetValueOrDefault(question.Id, new List<int>());
+        var selectedIds = _selectedAnswers.GetValueOrDefault(question.Id, []);
 
         foreach (var answer in question.Answers)
         {
@@ -119,14 +133,16 @@ public partial class QuizPlayerWindow : Window
                     IsChecked = isSelected,
                     FontSize = 14,
                     Padding = new Thickness(10, 6),
-                    Margin = new Thickness(0, 2)
+                    Margin = new Thickness(0),
+                    VerticalContentAlignment = VerticalAlignment.Center
                 };
                 radioButton.IsCheckedChanged += (s, e) =>
                 {
                     if (radioButton.IsChecked == true)
                         OnAnswerSelected(question.Id, answer.Id, true);
+                    UpdateAnswerCardStyles();
                 };
-                PnlAnswers.Children.Add(radioButton);
+                PnlAnswers.Children.Add(WrapInAnswerCard(radioButton, isSelected));
             }
             else
             {
@@ -137,7 +153,8 @@ public partial class QuizPlayerWindow : Window
                     IsChecked = isSelected,
                     FontSize = 14,
                     Padding = new Thickness(10, 6),
-                    Margin = new Thickness(0, 2)
+                    Margin = new Thickness(0),
+                    VerticalContentAlignment = VerticalAlignment.Center
                 };
                 checkBox.IsCheckedChanged += (s, e) =>
                 {
@@ -145,25 +162,86 @@ public partial class QuizPlayerWindow : Window
                         OnAnswerSelected(question.Id, answer.Id, false);
                     else
                         OnAnswerDeselected(question.Id, answer.Id);
+                    UpdateAnswerCardStyles();
                 };
-                PnlAnswers.Children.Add(checkBox);
+                PnlAnswers.Children.Add(WrapInAnswerCard(checkBox, isSelected));
             }
         }
 
         UpdateNavigationButtons();
     }
 
+    private Border WrapInAnswerCard(Control control, bool isSelected)
+    {
+        var card = new Border
+        {
+            Background = Res("CardBackgroundBrush"),
+            BorderBrush = isSelected
+                ? Res("AccentBrush")
+                : Res("BorderSubtleBrush"),
+            BorderThickness = new Thickness(isSelected ? 2 : 1),
+            CornerRadius = new CornerRadius(10),
+            Padding = new Thickness(14, 10),
+            Cursor = new Cursor(StandardCursorType.Hand),
+            Child = control
+        };
+        card.Classes.Add("card-hoverable");
+        return card;
+    }
+
+    private void UpdateAnswerCardStyles()
+    {
+        if (_currentIndex < 0 || _currentIndex >= _questions.Count) return;
+        var question = _questions[_currentIndex];
+        var selectedIds = _selectedAnswers.GetValueOrDefault(question.Id, []);
+
+        foreach (var child in PnlAnswers.Children)
+        {
+            if (child is Border card && card.Child is Control ctrl && ctrl.Tag is int answerId)
+            {
+                bool isSelected = selectedIds.Contains(answerId);
+                card.BorderBrush = isSelected
+                    ? Res("AccentBrush")
+                    : Res("BorderSubtleBrush");
+                card.BorderThickness = new Thickness(isSelected ? 2 : 1);
+            }
+        }
+    }
+
+    private void UpdateProgressBar()
+    {
+        if (_questions.Count == 0) return;
+        double fraction = (_currentIndex + 1.0) / _questions.Count;
+
+        // Use LayoutUpdated to get actual width
+        ProgressBarTrack.LayoutUpdated += OnProgressLayoutUpdated;
+        void OnProgressLayoutUpdated(object? s, EventArgs e)
+        {
+            ProgressBarTrack.LayoutUpdated -= OnProgressLayoutUpdated;
+            double trackWidth = ProgressBarTrack.Bounds.Width;
+            if (trackWidth > 0)
+            {
+                ProgressBarFill.Width = trackWidth * fraction;
+            }
+        }
+        // Also set immediately if width is already known
+        if (ProgressBarTrack.Bounds.Width > 0)
+        {
+            ProgressBarFill.Width = ProgressBarTrack.Bounds.Width * fraction;
+        }
+    }
+
     private void OnAnswerSelected(int questionId, int answerId, bool isSingleChoice)
     {
         if (isSingleChoice)
         {
-            _selectedAnswers[questionId] = new List<int> { answerId };
+            _selectedAnswers[questionId] = [answerId];
         }
         else
         {
             if (!_selectedAnswers.ContainsKey(questionId))
             {
-                _selectedAnswers[questionId] = new List<int>();
+                _selectedAnswers[questionId] = [];
             }
             if (!_selectedAnswers[questionId].Contains(answerId))
             {
@@ -235,21 +313,21 @@ public partial class QuizPlayerWindow : Window
 
         if (percent >= 80)
         {
-            var brush = this.FindResource("SuccessBrush") as Avalonia.Media.IBrush;
+            var brush = Res("SuccessBrush");
             TxtScorePercent.Foreground = brush;
             IconResult.Symbol = Symbol.Accept;
             IconResult.Foreground = brush;
         }
         else if (percent >= 50)
         {
-            var brush = this.FindResource("WarningBrush") as Avalonia.Media.IBrush;
+            var brush = Res("WarningBrush");
             TxtScorePercent.Foreground = brush;
             IconResult.Symbol = Symbol.Important;
             IconResult.Foreground = brush;
         }
         else
         {
-            var brush = this.FindResource("DangerBrush") as Avalonia.Media.IBrush;
+            var brush = Res("DangerBrush");
             TxtScorePercent.Foreground = brush;
             IconResult.Symbol = Symbol.Cancel;
             IconResult.Foreground = brush;
@@ -266,7 +344,7 @@ public partial class QuizPlayerWindow : Window
 
         foreach (var question in _questions)
         {
-            var selectedIds = _selectedAnswers.GetValueOrDefault(question.Id, new List<int>());
+            var selectedIds = _selectedAnswers.GetValueOrDefault(question.Id, []);
 
             foreach (var answer in question.Answers)
             {
