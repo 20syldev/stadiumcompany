@@ -1,3 +1,14 @@
-bin/
-obj/
-.env
+# Desktop
+desktop/bin/
+desktop/obj/
+desktop/.env
+
+# Laravel (web)
+web/vendor/
+web/node_modules/
+web/.env
+web/storage/*.key
+web/public/hot
+web/public/storage
+web/bootstrap/cache/
+web/.phpunit.result.cache
