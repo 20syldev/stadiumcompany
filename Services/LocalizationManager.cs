@@ -7,7 +7,7 @@ public class LocalizationManager
     private static LocalizationManager? _instance;
     public static LocalizationManager Instance => _instance ??= new LocalizationManager();
 
-    private Dictionary<string, string> _strings = new();
+    private Dictionary<string, string> _strings = [];
     private string _currentLanguage = "fr";
 
     public string CurrentLanguage => _currentLanguage;
@@ -48,7 +48,7 @@ public class LocalizationManager
             {
                 using var reader = new StreamReader(stream);
                 var json = reader.ReadToEnd();
-                _strings = JsonSerializer.Deserialize<Dictionary<string, string>>(json) ?? new();
+                _strings = JsonSerializer.Deserialize<Dictionary<string, string>>(json) ?? [];
                 return;
             }
         }
@@ -60,7 +60,7 @@ public class LocalizationManager
         if (File.Exists(filePath))
         {
             var json = File.ReadAllText(filePath);
-            _strings = JsonSerializer.Deserialize<Dictionary<string, string>>(json) ?? new();
+            _strings = JsonSerializer.Deserialize<Dictionary<string, string>>(json) ?? [];
         }
     }
 

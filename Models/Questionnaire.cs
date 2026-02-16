@@ -11,7 +11,7 @@ public class Questionnaire
     // Navigation properties
     public Theme? Theme { get; set; }
     public User? Owner { get; set; }
-    public List<Question> Questions { get; set; } = new();
+    public List<Question> Questions { get; set; } = [];
 
     // Can be set from SQL query or computed from Questions
     private int? _questionCount;

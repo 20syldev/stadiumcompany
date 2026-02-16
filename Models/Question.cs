@@ -16,5 +16,5 @@ public class Question
 
     // Navigation properties
     public Questionnaire? Questionnaire { get; set; }
-    public List<Answer> Answers { get; set; } = new();
+    public List<Answer> Answers { get; set; } = [];
 }
