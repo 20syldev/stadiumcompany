@@ -147,5 +147,16 @@
   "main.pdf_file_type": "PDF Document",
   "main.fork_suffix": "(copy)",
 
-  "error.source_not_found": "Source questionnaire not found"
+  "error.source_not_found": "Source questionnaire not found",
+
+  "main.card_questions_count": "{0} question(s)",
+  "main.card_published": "Published",
+  "main.card_draft": "Draft",
+  "main.card_by": "by {0}",
+  "main.empty_mine": "No questionnaires. Create one!",
+  "main.empty_published": "No published questionnaires.",
+
+  "editor.add_answer": "Add answer",
+  "editor.answer_placeholder": "Enter the answer...",
+  "editor.distribute_points": "Distribute points"
 }
