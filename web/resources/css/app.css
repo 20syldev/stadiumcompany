@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+@source '../views';
+@plugin '@tailwindcss/forms';
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+    --color-accent: #667eea;
+    --color-accent-hover: #5a6fd6;
+    --color-bg-app: #f8fafc;
+    --color-bg-card: #ffffff;
+    --color-bg-card-hover: #f1f5f9;
+    --color-text-primary: #1e293b;
+    --color-text-secondary: #334155;
+    --color-text-tertiary: #64748b;
+    --color-border-subtle: #e2e8f0;
+    --color-border-card: #e2e8f0;
+    --color-success: #22c55e;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
+}
+
+.dark {
+    --color-accent: #818cf8;
+    --color-accent-hover: #6d7af0;
+    --color-bg-app: #1e1e2e;
+    --color-bg-card: #2a2a3d;
+    --color-bg-card-hover: #333350;
+    --color-text-primary: #e2e8f0;
+    --color-text-secondary: #cbd5e1;
+    --color-text-tertiary: #94a3b8;
+    --color-border-subtle: #374151;
+    --color-border-card: #374151;
+    --color-success: #4ade80;
+    --color-warning: #fbbf24;
+    --color-danger: #f87171;
+}
+
+body {
+    background-color: var(--color-bg-app);
+    color: var(--color-text-primary);
+}
