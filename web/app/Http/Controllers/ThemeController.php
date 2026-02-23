@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreThemeRequest;
 use App\Models\Theme;
-use Illuminate\Http\Request;
 
 class ThemeController extends Controller
 {
-    public function store(Request $request)
+    public function store(StoreThemeRequest $request)
     {
-        $request->validate(['name' => 'required|string|max:50|unique:themes']);
-        $theme = Theme::create(['name' => $request->name]);
+        $theme = Theme::create($request->validated());
 
         if ($request->wantsJson()) {
             return response()->json($theme);

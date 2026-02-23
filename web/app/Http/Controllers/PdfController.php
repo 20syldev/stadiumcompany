@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Questionnaire;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
 
 class PdfController extends Controller
 {
-    public function generate(Questionnaire $questionnaire, Request $request)
+    public function generate(Questionnaire $questionnaire)
     {
-        if (!$questionnaire->published && $questionnaire->user_id !== $request->user()->id) {
-            abort(403);
-        }
+        $this->authorize('generatePdf', $questionnaire);
 
         $questionnaire->load('questions.answers', 'theme');
 
