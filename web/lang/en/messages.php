@@ -88,6 +88,7 @@ return [
         'close' => 'Close',
         'cancel' => 'Cancel',
         'save' => 'Save',
+        'saved' => 'Saved',
         'add_answer' => 'Add answer',
         'answer_placeholder' => 'Enter the answer...',
         'distribute_points' => 'Distribute points',

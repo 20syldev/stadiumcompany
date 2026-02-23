@@ -88,6 +88,7 @@ return [
         'close' => 'Fermer',
         'cancel' => 'Annuler',
         'save' => 'Enregistrer',
+        'saved' => 'Enregistré',
         'add_answer' => 'Ajouter une réponse',
         'answer_placeholder' => 'Saisissez la réponse...',
         'distribute_points' => 'Distribuer les points',
