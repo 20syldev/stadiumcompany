@@ -1,128 +1,41 @@
-# StadiumCompany - Gestion de Questionnaires
+# StadiumCompany
 
-Application de gestion de questionnaires d'évaluation pour StadiumCompany, développée en C# avec Avalonia UI (cross-platform).
+Application de gestion de questionnaires d'évaluation développée en double plateforme : desktop et web. Projet réalisé dans le cadre du PPE SLAM (SIO2).
 
 ## Fonctionnalités
 
 - Authentification (connexion / inscription)
-- Gestion des questionnaires (CRUD)
-- Gestion des questions (Vrai/Faux ou Choix multiples)
-- Gestion des réponses avec système de poids/points
-- Publication des questionnaires
-- Mode joueur pour répondre aux questionnaires publiés
-- Préférences utilisateur (thème clair/sombre, langue)
+- Gestion CRUD des questionnaires, questions et réponses
+- Questions vrai/faux ou choix multiples avec pondération
+- Publication et fork de questionnaires
+- Mode joueur pour répondre aux quiz avec scoring
+- Génération PDF des questionnaires
+- Thème clair/sombre
 - Internationalisation (français / anglais)
 
-## Prérequis
+## Stack technique
 
-- .NET 8.0 SDK
-- PostgreSQL Server
+| Composant | Technologie |
+|-----------|-------------|
+| Base de données | PostgreSQL |
+| Desktop | C# / .NET 8.0, Avalonia UI |
+| Web | PHP 8.2, Laravel 12, Tailwind CSS |
 
-## Installation
-
-### 1. Base de données
+## Base de données
 
 Créer l'utilisateur et la base de données PostgreSQL :
-
-```bash
-sudo -u postgres psql
-```
 
 ```sql
 CREATE USER stadiumcompany WITH PASSWORD 'stadiumcompany';
 CREATE DATABASE stadiumcompany OWNER stadiumcompany;
-\q
 ```
 
-Exécuter les scripts SQL :
+Exécuter les scripts SQL situés à la racine du projet :
 
 ```bash
 psql -U stadiumcompany -d stadiumcompany -f schema.sql
 psql -U stadiumcompany -d stadiumcompany -f insert.sql
 ```
-
-Si vous recréez les tables en tant que superuser (postgres), accordez les permissions :
-
-```bash
-sudo -u postgres psql -d stadiumcompany
-```
-
-```sql
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO stadiumcompany;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO stadiumcompany;
-```
-
-### 2. Configuration
-
-La chaîne de connexion se trouve dans `DAL/Database.cs` :
-
-```csharp
-private const string ConnectionString = "Host=localhost;Database=stadiumcompany;Username=stadiumcompany;Password=stadiumcompany";
-```
-
-### 3. Compilation et exécution
-
-```bash
-dotnet build
-dotnet run
-```
-
-Ou avec hot-reload :
-
-```bash
-dotnet watch
-```
-
-## Structure du projet
-
-```
-stadiumcompany/
-├── Models/                 # Classes métier
-│   ├── User.cs
-│   ├── Theme.cs
-│   ├── Questionnaire.cs
-│   ├── Question.cs
-│   ├── Answer.cs
-│   └── UserPreferences.cs
-├── DAL/                    # Data Access Layer (repositories)
-│   ├── Database.cs
-│   ├── UserRepository.cs
-│   ├── ThemeRepository.cs
-│   ├── QuestionnaireRepository.cs
-│   ├── QuestionRepository.cs
-│   ├── AnswerRepository.cs
-│   └── UserPreferencesRepository.cs
-├── Views/                  # Vues Avalonia (AXAML)
-│   ├── MainWindow.axaml
-│   ├── LoginView.axaml
-│   ├── MainView.axaml
-│   ├── QuestionnaireEditorWindow.axaml
-│   ├── QuestionEditorWindow.axaml
-│   ├── AnswerEditorWindow.axaml
-│   └── QuizPlayerWindow.axaml
-├── Services/               # Services applicatifs
-│   └── LocalizationManager.cs
-├── Resources/              # Fichiers de localisation
-│   ├── Strings.fr.json
-│   └── Strings.en.json
-├── Program.cs              # Point d'entrée
-├── App.axaml               # Configuration Avalonia
-├── StadiumCompany.csproj   # Configuration du projet
-├── schema.sql              # Script de création BDD
-└── insert.sql              # Données initiales
-```
-
-## Architecture
-
-Le projet suit le pattern **MVC** (Model-View-Controller) :
-
-- **Models/** : Classes représentant les entités métier
-- **DAL/** : Couche d'accès aux données (repositories)
-- **Views/** : Interface utilisateur (vues Avalonia)
-- **Services/** : Services transverses (localisation)
-- **Resources/** : Fichiers de traduction (JSON)
-
-## Base de données
 
 ### MCD
 
@@ -134,15 +47,19 @@ questions (1,1) ──── propose ──── (0,n) answers
 users (1,1) ──── possède ──── (0,1) user_preferences
 ```
 
-Le schéma détaillé des tables se trouve dans le fichier `schema.sql`.
+Le schéma détaillé des tables se trouve dans `schema.sql`.
 
-## Technologies
+## Structure du projet
 
-- **Framework** : .NET 8.0
-- **UI** : [Avalonia UI](https://avaloniaui.net/) avec [FluentAvalonia](https://github.com/amwx/FluentAvalonia)
-- **Base de données** : PostgreSQL
-- **Driver** : Npgsql
+```
+stadiumcompany/
+├── desktop/       # Application desktop (C# / Avalonia)
+├── web/           # Application web (Laravel)
+├── schema.sql     # Script de création BDD
+└── insert.sql     # Données initiales
+```
 
-## Licence
+## Documentation
 
-Projet pédagogique - SIO2 PPE SLAM
+- [README Desktop](desktop/README.md) — Installation et détails de l'application desktop
+- [README Web](web/README.md) — Installation et détails de l'application web
