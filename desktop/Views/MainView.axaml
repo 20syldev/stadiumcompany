@@ -97,6 +97,19 @@
                                     <TextBlock x:Name="TxtLanguageToggle" Text="English" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
                                 </StackPanel>
                             </Button>
+                            <Button x:Name="BtnAdmin"
+                                    Background="Transparent"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Left"
+                                    Padding="12,10"
+                                    CornerRadius="6"
+                                    IsVisible="False"
+                                    Click="BtnAdmin_Click">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <ui:SymbolIcon Symbol="Setting" FontSize="16" Foreground="{DynamicResource TextTertiaryBrush}"/>
+                                    <TextBlock x:Name="TxtAdmin" Text="Admin" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                            </Button>
                             <Border Background="{DynamicResource BorderSubtleBrush}" Height="1" Margin="6,4"/>
                             <Button Background="Transparent"
                                     HorizontalAlignment="Stretch"

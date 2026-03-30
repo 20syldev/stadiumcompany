@@ -158,5 +158,26 @@
 
   "editor.add_answer": "Ajouter une réponse",
   "editor.answer_placeholder": "Saisissez la réponse...",
-  "editor.distribute_points": "Distribuer les points"
+  "editor.distribute_points": "Distribuer les points",
+
+  "admin.title": "Logs administrateur",
+  "admin.btn_admin": "Admin",
+  "admin.search_placeholder": "Rechercher...",
+  "admin.filter_all": "Tous",
+  "admin.from": "Du",
+  "admin.to": "Au",
+  "admin.btn_search": "Rechercher",
+  "admin.btn_reset": "Réinitialiser",
+  "admin.col_id": "ID",
+  "admin.col_user": "Utilisateur",
+  "admin.col_action": "Action",
+  "admin.col_entity": "Entité",
+  "admin.col_details": "Détails",
+  "admin.col_source": "Source",
+  "admin.col_date": "Date",
+  "admin.pagination": "Page {0}/{1}",
+  "admin.previous": "Précédent",
+  "admin.next": "Suivant",
+  "admin.back": "Retour",
+  "admin.no_results": "Aucun log trouvé."
 }

@@ -158,5 +158,26 @@
 
   "editor.add_answer": "Add answer",
   "editor.answer_placeholder": "Enter the answer...",
-  "editor.distribute_points": "Distribute points"
+  "editor.distribute_points": "Distribute points",
+
+  "admin.title": "Admin Logs",
+  "admin.btn_admin": "Admin",
+  "admin.search_placeholder": "Search...",
+  "admin.filter_all": "All",
+  "admin.from": "From",
+  "admin.to": "To",
+  "admin.btn_search": "Search",
+  "admin.btn_reset": "Reset",
+  "admin.col_id": "ID",
+  "admin.col_user": "User",
+  "admin.col_action": "Action",
+  "admin.col_entity": "Entity",
+  "admin.col_details": "Details",
+  "admin.col_source": "Source",
+  "admin.col_date": "Date",
+  "admin.pagination": "Page {0}/{1}",
+  "admin.previous": "Previous",
+  "admin.next": "Next",
+  "admin.back": "Back",
+  "admin.no_results": "No logs found."
 }

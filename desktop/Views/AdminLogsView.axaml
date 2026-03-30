@@ -1,0 +1,190 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             x:Class="StadiumCompany.Views.AdminLogsView">
+
+    <Grid Margin="30,25,30,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="BtnBack"
+                    Grid.Column="0"
+                    Background="Transparent"
+                    Padding="10,8"
+                    CornerRadius="8"
+                    VerticalAlignment="Center"
+                    Click="BtnBack_Click">
+                <ui:SymbolIcon Symbol="Back" FontSize="18" Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </Button>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12" Margin="12,0,0,0">
+                <ui:SymbolIcon Symbol="Setting"
+                               FontSize="28"
+                               Foreground="{DynamicResource AccentBrush}"/>
+                <TextBlock x:Name="TxtTitle"
+                           Text="Admin Logs"
+                           FontSize="24"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Refresh button -->
+        <Grid Grid.Row="1" Margin="0,20,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="BtnRefresh"
+                    Grid.Column="1"
+                    Background="Transparent"
+                    Padding="10,8"
+                    CornerRadius="8"
+                    VerticalAlignment="Center"
+                    Click="BtnRefresh_Click">
+                <ui:SymbolIcon Symbol="Refresh" FontSize="18" Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </Button>
+        </Grid>
+
+        <!-- Filters bar -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource CardBackgroundBrush}"
+                CornerRadius="10"
+                Padding="16,12"
+                BorderBrush="{DynamicResource BorderSubtleBrush}"
+                BorderThickness="1"
+                Margin="0,0,0,12">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <TextBox x:Name="TxtSearch"
+                         Watermark="Search..."
+                         Width="250"
+                         Height="36"
+                         CornerRadius="8"
+                         FontSize="13"/>
+
+                <ComboBox x:Name="CmbFilter"
+                          Width="180"
+                          Height="36"
+                          CornerRadius="8"
+                          FontSize="13"/>
+
+                <TextBlock x:Name="TxtFrom"
+                           Text="From"
+                           FontSize="13"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           VerticalAlignment="Center"/>
+                <CalendarDatePicker x:Name="DpFrom"
+                                    Width="160"
+                                    Height="36"
+                                    Watermark="dd/MM/yyyy"
+                                    CornerRadius="8"/>
+
+                <TextBlock x:Name="TxtTo"
+                           Text="To"
+                           FontSize="13"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           VerticalAlignment="Center"/>
+                <CalendarDatePicker x:Name="DpTo"
+                                    Width="160"
+                                    Height="36"
+                                    Watermark="dd/MM/yyyy"
+                                    CornerRadius="8"/>
+
+                <Button x:Name="BtnSearch"
+                        Padding="14,8"
+                        CornerRadius="8"
+                        Classes="accent"
+                        Click="BtnSearch_Click">
+                    <TextBlock x:Name="TxtBtnSearch" Text="Search" FontSize="13" FontWeight="SemiBold"/>
+                </Button>
+
+                <Button x:Name="BtnReset"
+                        Background="Transparent"
+                        Padding="14,8"
+                        CornerRadius="8"
+                        Click="BtnReset_Click">
+                    <TextBlock x:Name="TxtBtnReset" Text="Reset" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Data content -->
+        <Grid Grid.Row="3">
+            <!-- DataGrid for logs -->
+            <DataGrid x:Name="LogsDataGrid"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserSortColumns="False"
+                      CanUserResizeColumns="True"
+                      GridLinesVisibility="Horizontal"
+                      BorderThickness="1"
+                      BorderBrush="{DynamicResource BorderSubtleBrush}"
+                      CornerRadius="10"/>
+
+            <!-- Empty state -->
+            <StackPanel x:Name="EmptyState"
+                        IsVisible="False"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Spacing="12">
+                <ui:SymbolIcon Symbol="List"
+                               FontSize="48"
+                               Foreground="{DynamicResource TextTertiaryBrush}"
+                               HorizontalAlignment="Center"
+                               Opacity="0.5"/>
+                <TextBlock x:Name="TxtEmptyState"
+                           Text="No logs found."
+                           FontSize="16"
+                           Foreground="{DynamicResource TextTertiaryBrush}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Pagination -->
+        <Grid Grid.Row="4" Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="16" HorizontalAlignment="Center">
+                <Button x:Name="BtnPrevious"
+                        Padding="14,8"
+                        CornerRadius="8"
+                        Click="BtnPrevious_Click">
+                    <TextBlock x:Name="TxtBtnPrevious" Text="Previous" FontSize="13"/>
+                </Button>
+
+                <TextBlock x:Name="TxtPageInfo"
+                           Text="Page 1"
+                           FontSize="13"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           VerticalAlignment="Center"/>
+
+                <Button x:Name="BtnNext"
+                        Padding="14,8"
+                        CornerRadius="8"
+                        Click="BtnNext_Click">
+                    <TextBlock x:Name="TxtBtnNext" Text="Next" FontSize="13"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</UserControl>

@@ -814,10 +814,12 @@ public partial class QuestionnaireEditorWindow : Window
         if (_questionnaireId.HasValue)
         {
             _questionnaireRepository.Update(questionnaire, _userId);
+            ActivityLogger.Log(_userId, "questionnaire.update", "questionnaire", _questionnaireId.Value, questionnaire.Name);
         }
         else
         {
             _questionnaireId = _questionnaireRepository.Create(questionnaire);
+            ActivityLogger.Log(_userId, "questionnaire.create", "questionnaire", _questionnaireId.Value, questionnaire.Name);
         }
 
         // Delete removed questions

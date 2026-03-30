@@ -50,6 +50,9 @@ public partial class MainView : UserControl
         TxtUserName.Text = user.FullName ?? user.Email;
         TxtUserInitial.Text = (user.FullName ?? user.Email).Substring(0, 1).ToUpper();
 
+        // Admin button visibility
+        BtnAdmin.IsVisible = user.IsAdmin;
+
         // Load saved preferences
         LoadUserPreferences();
 
@@ -426,6 +429,7 @@ public partial class MainView : UserControl
         TxtThemeToggle.Text = _isDarkTheme ? loc.T("user_menu.light_theme") : loc.T("user_menu.dark_theme");
         TxtLanguageToggle.Text = loc.T("user_menu.language");
         TxtLogout.Text = loc.T("user_menu.logout");
+        TxtAdmin.Text = loc.T("admin.btn_admin");
 
         // Reload data to update translated fields
         LoadQuestionnaires();
@@ -521,9 +525,17 @@ public partial class MainView : UserControl
         }
     }
 
+    private void BtnAdmin_Click(object? sender, RoutedEventArgs e)
+    {
+        UserMenuPopup.IsOpen = false;
+        _mainWindow.ShowAdminView(_currentUser);
+    }
+
+
     private void BtnLogout_Click(object? sender, RoutedEventArgs e)
     {
         UserMenuPopup.IsOpen = false;
+        ActivityLogger.Log(_currentUser.Id, "logout", "user", _currentUser.Id);
         _mainWindow.Logout();
     }
 
@@ -575,6 +587,7 @@ public partial class MainView : UserControl
         if (result == ContentDialogResult.Primary)
         {
             _questionnaireRepository.Delete(q.Id, _currentUser.Id);
+            ActivityLogger.Log(_currentUser.Id, "questionnaire.delete", "questionnaire", q.Id, q.Name);
             LoadQuestionnaires();
             BuildCards();
         }
@@ -602,6 +615,7 @@ public partial class MainView : UserControl
             try
             {
                 _questionnaireRepository.Fork(q.Id, _currentUser.Id);
+                ActivityLogger.Log(_currentUser.Id, "questionnaire.fork", "questionnaire", q.Id, q.Name);
                 LoadQuestionnaires();
                 _showingMine = true;
                 UpdateTabStyles();
@@ -722,7 +736,7 @@ public partial class MainView : UserControl
             return;
         }
 
-        var quizWindow = new QuizPlayerWindow(questionnaire, isDemoMode);
+        var quizWindow = new QuizPlayerWindow(questionnaire, isDemoMode, _currentUser.Id);
         await quizWindow.ShowDialog(_mainWindow);
     }
 

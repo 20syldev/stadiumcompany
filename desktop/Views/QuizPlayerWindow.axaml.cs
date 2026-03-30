@@ -17,6 +17,7 @@ public partial class QuizPlayerWindow : Window
     private int _currentIndex = 0;
     private readonly Dictionary<int, List<int>> _selectedAnswers = [];
     private readonly bool _isDemoMode;
+    private readonly int? _userId;
 
     private static IBrush Res(string key)
     {
@@ -33,11 +34,12 @@ public partial class QuizPlayerWindow : Window
         _questions = [];
     }
 
-    public QuizPlayerWindow(Questionnaire questionnaire, bool isDemoMode = false)
+    public QuizPlayerWindow(Questionnaire questionnaire, bool isDemoMode = false, int? userId = null)
     {
         InitializeComponent();
         _questionnaire = questionnaire;
         _isDemoMode = isDemoMode;
+        _userId = userId;
         _questions = questionnaire.Questions.OrderBy(q => q.Number).ToList();
 
         var loc = LocalizationManager.Instance;
@@ -134,7 +136,8 @@ public partial class QuizPlayerWindow : Window
                     FontSize = 14,
                     Padding = new Thickness(10, 6),
                     Margin = new Thickness(0),
-                    VerticalContentAlignment = VerticalAlignment.Center
+                    VerticalContentAlignment = VerticalAlignment.Center,
+                    IsHitTestVisible = false
                 };
                 radioButton.IsCheckedChanged += (s, e) =>
                 {
@@ -142,7 +145,12 @@ public partial class QuizPlayerWindow : Window
                         OnAnswerSelected(question.Id, answer.Id, true);
                     UpdateAnswerCardStyles();
                 };
-                PnlAnswers.Children.Add(WrapInAnswerCard(radioButton, isSelected));
+                var card = WrapInAnswerCard(radioButton, isSelected);
+                card.PointerPressed += (s, e) =>
+                {
+                    radioButton.IsChecked = true;
+                };
+                PnlAnswers.Children.Add(card);
             }
             else
             {
@@ -154,7 +162,8 @@ public partial class QuizPlayerWindow : Window
                     FontSize = 14,
                     Padding = new Thickness(10, 6),
                     Margin = new Thickness(0),
-                    VerticalContentAlignment = VerticalAlignment.Center
+                    VerticalContentAlignment = VerticalAlignment.Center,
+                    IsHitTestVisible = false
                 };
                 checkBox.IsCheckedChanged += (s, e) =>
                 {
@@ -164,7 +173,12 @@ public partial class QuizPlayerWindow : Window
                         OnAnswerDeselected(question.Id, answer.Id);
                     UpdateAnswerCardStyles();
                 };
-                PnlAnswers.Children.Add(WrapInAnswerCard(checkBox, isSelected));
+                var card = WrapInAnswerCard(checkBox, isSelected);
+                card.PointerPressed += (s, e) =>
+                {
+                    checkBox.IsChecked = !checkBox.IsChecked;
+                };
+                PnlAnswers.Children.Add(card);
             }
         }
 
@@ -307,6 +321,9 @@ public partial class QuizPlayerWindow : Window
 
         var (score, maxScore) = CalculateScore();
         TxtScore.Text = $"{FormatScore(score)}/{FormatScore(maxScore)}";
+
+        ActivityLogger.Log(_userId, "quiz.complete", "questionnaire", _questionnaire.Id,
+            $"{_questionnaire.Name} — {FormatScore(score)}/{FormatScore(maxScore)}");
 
         double percent = maxScore > 0 ? (double)(score / maxScore * 100) : 0;
         TxtScorePercent.Text = $"{percent:F0}%";

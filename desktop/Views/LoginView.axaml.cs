@@ -94,6 +94,7 @@ public partial class LoginView : UserControl
         var user = _userRepository.Authenticate(TxtLogin.Text!.Trim(), TxtPassword.Text!);
         if (user != null)
         {
+            ActivityLogger.Log(user.Id, "login", "user", user.Id);
             _mainWindow.ShowMainView(user);
         }
         else

@@ -66,6 +66,7 @@ public class UserRepository
             Password = reader.GetString(reader.GetOrdinal("password")),
             LastName = reader.IsDBNull(reader.GetOrdinal("last_name")) ? null : reader.GetString(reader.GetOrdinal("last_name")),
             FirstName = reader.IsDBNull(reader.GetOrdinal("first_name")) ? null : reader.GetString(reader.GetOrdinal("first_name")),
+            IsAdmin = !reader.IsDBNull(reader.GetOrdinal("is_admin")) && reader.GetBoolean(reader.GetOrdinal("is_admin")),
             CreatedAt = reader.GetDateTime(reader.GetOrdinal("created_at"))
         };
     }

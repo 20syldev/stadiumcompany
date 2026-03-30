@@ -7,6 +7,7 @@ public class User
     public string Password { get; set; } = string.Empty;
     public string? LastName { get; set; }
     public string? FirstName { get; set; }
+    public bool IsAdmin { get; set; }
     public DateTime CreatedAt { get; set; }
 
     public string? FullName

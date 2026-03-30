@@ -41,6 +41,19 @@ public partial class MainWindow : Window
         ContentArea.Content = new MainView(this, user);
     }
 
+    public void ShowAdminView(User user)
+    {
+        Title = "Stadium Company - Admin Logs";
+        MinWidth = 800;
+        MinHeight = 550;
+        CanResize = true;
+        WindowState = WindowState.Maximized;
+
+        _backgroundPanel.Bind(Panel.BackgroundProperty, this.GetResourceObservable("AppBackgroundAltBrush"));
+
+        ContentArea.Content = new AdminLogsView(this, user);
+    }
+
     public void Logout()
     {
         ShowLoginView();
