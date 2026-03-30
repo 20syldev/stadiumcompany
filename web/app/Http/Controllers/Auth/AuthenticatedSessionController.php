@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\ActivityLogService;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -34,6 +35,8 @@ class AuthenticatedSessionController extends Controller
             app()->setLocale($prefs->language);
         }
 
+        ActivityLogService::log(auth()->id(), 'login', 'user', auth()->id());
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
@@ -42,6 +45,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        ActivityLogService::log(auth()->id(), 'logout', 'user', auth()->id());
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

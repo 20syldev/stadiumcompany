@@ -11,7 +11,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->web(append: [\App\Http\Middleware\ApplyUserPreferences::class]);
+        $middleware->web(append: [
+            \App\Http\Middleware\ApplyUserPreferences::class,
+            \App\Http\Middleware\CheckPendingMigrations::class,
+        ]);
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\EnsureIsAdmin::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

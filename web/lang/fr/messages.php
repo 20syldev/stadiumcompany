@@ -186,6 +186,23 @@ return [
         'already_sent' => 'Avis déjà envoyé',
     ],
 
+    'admin' => [
+        'logs_title' => 'Journaux d\'activité',
+        'search_placeholder' => 'Rechercher...',
+        'filter_action' => 'Toutes les actions',
+        'filter_from' => 'Du',
+        'filter_to' => 'Au',
+        'search' => 'Rechercher',
+        'reset' => 'Réinitialiser',
+        'col_date' => 'Date',
+        'col_user' => 'Utilisateur',
+        'col_action' => 'Action',
+        'col_entity' => 'Entité',
+        'col_details' => 'Détails',
+        'col_source' => 'Source',
+        'empty' => 'Aucun journal trouvé.',
+    ],
+
     'error' => [
         'source_not_found' => 'Questionnaire source non trouvé',
     ],

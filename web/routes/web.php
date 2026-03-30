@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\QuizController;
@@ -40,6 +41,11 @@ Route::middleware(['auth'])->group(function () {
 
     // Themes
     Route::post('themes', [ThemeController::class, 'store'])->name('themes.store');
+
+    // Admin
+    Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('logs', [AdminLogController::class, 'index'])->name('logs.index');
+    });
 });
 
 require __DIR__.'/auth.php';

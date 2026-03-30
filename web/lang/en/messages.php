@@ -186,6 +186,23 @@ return [
         'already_sent' => 'Feedback already submitted',
     ],
 
+    'admin' => [
+        'logs_title' => 'Activity Logs',
+        'search_placeholder' => 'Search...',
+        'filter_action' => 'All actions',
+        'filter_from' => 'From',
+        'filter_to' => 'To',
+        'search' => 'Search',
+        'reset' => 'Reset',
+        'col_date' => 'Date',
+        'col_user' => 'User',
+        'col_action' => 'Action',
+        'col_entity' => 'Entity',
+        'col_details' => 'Details',
+        'col_source' => 'Source',
+        'empty' => 'No logs found.',
+    ],
+
     'error' => [
         'source_not_found' => 'Source questionnaire not found',
     ],

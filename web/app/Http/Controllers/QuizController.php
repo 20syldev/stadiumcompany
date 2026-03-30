@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\QuestionFeedback;
 use App\Models\Questionnaire;
+use App\Services\ActivityLogService;
 use App\Services\QuizScoringService;
 use App\Services\QuizService;
 use Illuminate\Http\Request;
@@ -45,8 +46,16 @@ class QuizController extends Controller
 
         $result = $this->scoringService->calculate($questionnaire, $selectedAnswers);
 
-        $this->quizService->persistSubmission($questionnaire, $request->user()->id, $selectedAnswers, $result);
+        $submission = $this->quizService->persistSubmission($questionnaire, $request->user()->id, $selectedAnswers, $result);
 
-        return response()->json($result);
+        ActivityLogService::log(
+            $request->user()->id,
+            'quiz.complete',
+            'questionnaire',
+            $questionnaire->id,
+            "{$questionnaire->name} — {$result['score']}/{$result['maxScore']}"
+        );
+
+        return response()->json([...$result, 'submissionId' => $submission->id]);
     }
 }
