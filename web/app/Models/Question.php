@@ -34,4 +34,9 @@ class Question extends Model
     {
         return $this->hasMany(Answer::class)->orderBy('id');
     }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(QuestionFeedback::class);
+    }
 }

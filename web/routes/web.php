@@ -6,6 +6,7 @@ use App\Http\Controllers\QuizController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\UserPreferencesController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\QuestionFeedbackController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,6 +34,9 @@ Route::middleware(['auth'])->group(function () {
     // Preferences
     Route::post('preferences/toggle-theme', [UserPreferencesController::class, 'toggleTheme'])->name('preferences.toggle-theme');
     Route::post('preferences/toggle-language', [UserPreferencesController::class, 'toggleLanguage'])->name('preferences.toggle-language');
+
+    // Feedback
+    Route::post('questions/{question}/feedback', [QuestionFeedbackController::class, 'store'])->name('feedback.store');
 
     // Themes
     Route::post('themes', [ThemeController::class, 'store'])->name('themes.store');

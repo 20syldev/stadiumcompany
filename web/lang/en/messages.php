@@ -177,6 +177,15 @@ return [
         'filename_prefix' => 'Summary',
     ],
 
+    'feedback' => [
+        'title' => 'Your feedback',
+        'rating' => 'Rating',
+        'comment_placeholder' => 'Your comment... (optional)',
+        'submit' => 'Submit',
+        'saved' => 'Feedback submitted',
+        'already_sent' => 'Feedback already submitted',
+    ],
+
     'error' => [
         'source_not_found' => 'Source questionnaire not found',
     ],

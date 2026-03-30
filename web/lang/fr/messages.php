@@ -177,6 +177,15 @@ return [
         'filename_prefix' => 'Synthese',
     ],
 
+    'feedback' => [
+        'title' => 'Votre avis',
+        'rating' => 'Note',
+        'comment_placeholder' => 'Votre commentaire... (facultatif)',
+        'submit' => 'Envoyer',
+        'saved' => 'Avis enregistré',
+        'already_sent' => 'Avis déjà envoyé',
+    ],
+
     'error' => [
         'source_not_found' => 'Questionnaire source non trouvé',
     ],

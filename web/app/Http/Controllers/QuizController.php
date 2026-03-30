@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\QuestionFeedback;
 use App\Models\Questionnaire;
 use App\Services\QuizScoringService;
 use App\Services\QuizService;
@@ -14,7 +15,7 @@ class QuizController extends Controller
         private QuizService $quizService,
     ) {}
 
-    public function play(Questionnaire $questionnaire)
+    public function play(Request $request, Questionnaire $questionnaire)
     {
         $this->authorize('play', $questionnaire);
 
@@ -26,7 +27,15 @@ class QuizController extends Controller
             return back()->with('error', __('messages.main.quiz_impossible_message'));
         }
 
-        return view('quiz.player', compact('questionnaire', 'isDemoMode'));
+        $questionIds = $questionnaire->questions->pluck('id');
+        $alreadySentFeedback = QuestionFeedback::where('user_id', $request->user()->id)
+            ->whereIn('question_id', $questionIds)
+            ->pluck('question_id')
+            ->unique()
+            ->values()
+            ->toArray();
+
+        return view('quiz.player', compact('questionnaire', 'isDemoMode', 'alreadySentFeedback'));
     }
 
     public function score(Questionnaire $questionnaire, Request $request)

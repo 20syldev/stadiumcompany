@@ -76,6 +76,77 @@
                     </template>
                 </div>
             </template>
+
+            <!-- Feedback -->
+            <div class="mt-6 pt-4" style="border-top: 1px solid var(--color-border-subtle);">
+                <template x-if="feedbackSent[currentQuestion.id]">
+                    <p class="text-sm font-medium flex items-center gap-1.5" :style="feedbackSent[currentQuestion.id] === 'already' ? 'color: var(--color-accent);' : 'color: var(--color-success);'">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span x-text="feedbackSent[currentQuestion.id] === 'already' ? '{{ __('messages.feedback.already_sent') }}' : '{{ __('messages.feedback.saved') }}'"></span>
+                    </p>
+                </template>
+                <template x-if="!feedbackSent[currentQuestion.id]">
+                    <div>
+                        <!-- Toggle button -->
+                        <button type="button" @click="feedbackOpen[currentQuestion.id] = !feedbackOpen[currentQuestion.id]"
+                                class="flex items-center gap-2 text-sm font-semibold transition-colors duration-150 hover:opacity-80"
+                                style="color: var(--color-text-secondary);">
+                            <svg class="w-4 h-4 transition-transform duration-200" :class="feedbackOpen[currentQuestion.id] ? 'rotate-180' : ''"
+                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                            {{ __('messages.feedback.title') }}
+                        </button>
+
+                        <!-- Collapsible form -->
+                        <div x-show="feedbackOpen[currentQuestion.id]" x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2"
+                             class="mt-3">
+                            <!-- Star rating -->
+                            <div class="flex items-center gap-1 mb-3">
+                                <template x-for="star in 5" :key="star">
+                                    <button type="button"
+                                            @click="setRating(currentQuestion.id, star)"
+                                            @mouseenter="setHoverRating(currentQuestion.id, star)"
+                                            @mouseleave="setHoverRating(currentQuestion.id, 0)"
+                                            class="focus:outline-none transition-transform duration-150"
+                                            :class="star === (hoverRating[currentQuestion.id] || 0) ? 'scale-125' : ''">
+                                        <svg class="w-5 h-5 transition-colors duration-150"
+                                             viewBox="0 0 24 24"
+                                             :fill="star <= getStarDisplay(currentQuestion.id) ? 'currentColor' : 'none'"
+                                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                             :style="star <= getStarDisplay(currentQuestion.id) ? 'color: var(--color-warning)' : 'color: var(--color-border-subtle)'">
+                                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                                        </svg>
+                                    </button>
+                                </template>
+                            </div>
+                            <!-- Comment -->
+                            <textarea
+                                :value="getFeedbackForm(currentQuestion.id).comment || ''"
+                                @input="setComment(currentQuestion.id, $event.target.value)"
+                                class="w-full rounded-lg p-3 text-sm resize-none"
+                                style="background-color: var(--color-bg-page); border: 1px solid var(--color-border-subtle); color: var(--color-text-primary);"
+                                rows="2"
+                                placeholder="{{ __('messages.feedback.comment_placeholder') }}"
+                            ></textarea>
+                            <!-- Submit -->
+                            <div class="flex justify-end mt-2">
+                                <button type="button" @click="submitFeedback(currentQuestion.id)"
+                                        :disabled="!getFeedbackForm(currentQuestion.id).rating"
+                                        class="px-4 py-1.5 rounded-lg text-xs font-semibold text-white transition hover:opacity-90 disabled:opacity-40"
+                                        style="background-color: var(--color-accent);">
+                                    {{ __('messages.feedback.submit') }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
         </div>
     </template>
 
@@ -163,6 +234,10 @@ function quizPlayer() {
         scoreDisplay: '',
         scorePercent: 0,
         scoreColor: '',
+        feedbackForms: {},
+        feedbackSent: Object.fromEntries(@json($alreadySentFeedback).map(id => [id, 'already'])),
+        feedbackOpen: {},
+        hoverRating: {},
 
         get currentQuestion() {
             return this.questions[this.currentIndex];
@@ -206,6 +281,50 @@ function quizPlayer() {
 
         next() {
             if (this.currentIndex < this.questions.length - 1) this.currentIndex++;
+        },
+
+        getFeedbackForm(questionId) {
+            if (!this.feedbackForms[questionId]) {
+                this.feedbackForms[questionId] = { rating: 0, comment: '' };
+            }
+            return this.feedbackForms[questionId];
+        },
+
+        setRating(questionId, rating) {
+            this.getFeedbackForm(questionId).rating = rating;
+        },
+
+        setComment(questionId, comment) {
+            this.getFeedbackForm(questionId).comment = comment;
+        },
+
+        setHoverRating(questionId, rating) {
+            this.hoverRating[questionId] = rating;
+        },
+
+        getStarDisplay(questionId) {
+            return this.hoverRating[questionId] || this.getFeedbackForm(questionId).rating || 0;
+        },
+
+        async submitFeedback(questionId) {
+            const form = this.getFeedbackForm(questionId);
+            const url = '{{ url("questions") }}/' + questionId + '/feedback';
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                },
+                body: JSON.stringify({
+                    rating: form.rating,
+                    comment: form.comment || null,
+                }),
+            });
+
+            if (response.ok) {
+                this.feedbackSent[questionId] = 'just';
+            }
         },
 
         async finish() {

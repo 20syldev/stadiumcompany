@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\QuestionFeedback;
 use App\Models\Questionnaire;
+use App\Policies\QuestionFeedbackPolicy;
 use App\Policies\QuestionnairePolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -23,5 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(Questionnaire::class, QuestionnairePolicy::class);
+        Gate::policy(QuestionFeedback::class, QuestionFeedbackPolicy::class);
     }
 }
