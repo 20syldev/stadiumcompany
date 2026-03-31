@@ -9,7 +9,12 @@ Application de gestion de questionnaires d'évaluation développée en double pl
 - Questions vrai/faux ou choix multiples avec pondération
 - Publication et fork de questionnaires
 - Mode joueur pour répondre aux quiz avec scoring
+- Synthèse corrigée (procès-verbal) après un quiz
+- Feedback par question (note + commentaire)
 - Génération PDF des questionnaires
+- Supervision admin : journaux d'activité (desktop + web)
+- Gestion des utilisateurs : archivage/désarchivage avec procédures stockées
+- Script de sauvegarde quotidienne de la base de données
 - Thème clair/sombre
 - Internationalisation (français / anglais)
 
@@ -45,6 +50,12 @@ themes (0,n) ──── catégorise ──── (1,1) questionnaires
 questionnaires (1,1) ──── contient ──── (0,n) questions
 questions (1,1) ──── propose ──── (0,n) answers
 users (1,1) ──── possède ──── (0,1) user_preferences
+users (0,n) ──── soumet ──── (1,1) quiz_submissions
+questionnaires (0,n) ──── évalue ──── (1,1) quiz_submissions
+quiz_submissions (1,1) ──── détaille ──── (0,n) quiz_answers
+users (0,n) ──── rédige ──── (1,1) question_feedbacks
+questions (0,n) ──── reçoit ──── (1,1) question_feedbacks
+users (0,n) ──── génère ──── (1,1) activity_logs
 ```
 
 Le schéma détaillé des tables se trouve dans `schema.sql`.
@@ -55,7 +66,8 @@ Le schéma détaillé des tables se trouve dans `schema.sql`.
 stadiumcompany/
 ├── desktop/       # Application desktop (C# / Avalonia)
 ├── web/           # Application web (Laravel)
-├── schema.sql     # Script de création BDD
+├── scripts/       # Scripts utilitaires (backup.sh)
+├── schema.sql     # Script de création BDD (tables, procédures stockées, trigger)
 └── insert.sql     # Données initiales
 ```
 

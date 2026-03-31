@@ -22,15 +22,17 @@ Le projet suit une architecture **MVC** avec une couche service pour la logique 
 web/
 ├── app/
 │   ├── Http/
-│   │   ├── Controllers/    # Contrôleurs (Dashboard, Questionnaire, Quiz, Pdf, Theme, UserPreferences)
-│   │   └── Requests/       # Form Request validation
-│   ├── Models/             # Modèles Eloquent
-│   ├── Services/           # QuestionnaireService, QuizService, QuizScoringService
-│   ├── Enums/              # Enums de types
-│   └── Policies/           # Politiques d'autorisation
-├── resources/views/        # Templates Blade
-├── routes/                 # web.php, auth.php
-└── database/migrations/    # Migrations
+│   │   ├── Controllers/       # Contrôleurs (Dashboard, Questionnaire, Quiz, Pdf, Theme, UserPreferences, QuestionFeedback)
+│   │   ├── Controllers/Admin/ # Contrôleurs admin (AdminLogController)
+│   │   ├── Middleware/        # ApplyUserPreferences, CheckPendingMigrations, EnsureIsAdmin
+│   │   └── Requests/          # Form Request validation
+│   ├── Models/                # Modèles Eloquent (+ ActivityLog, QuestionFeedback)
+│   ├── Services/              # QuestionnaireService, QuizService, QuizScoringService, ActivityLogService, QuestionFeedbackService
+│   ├── Enums/                 # Enums de types
+│   └── Policies/              # Politiques d'autorisation
+├── resources/views/           # Templates Blade (+ quiz/review, admin/logs)
+├── routes/                    # web.php, auth.php
+└── database/migrations/       # Migrations
 ```
 
 ## Prérequis

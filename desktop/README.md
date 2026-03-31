@@ -19,10 +19,10 @@ Le projet suit une architecture **MVC** avec une couche d'accès aux données (D
 
 ```
 desktop/
-├── Models/          # Entités (User, Questionnaire, Question, Answer, Theme, UserPreferences)
-├── DAL/             # Repositories + Database.cs
-├── Views/           # Vues Avalonia (AXAML)
-├── Services/        # LocalizationManager, PdfGenerator
+├── Models/          # Entités (User, Questionnaire, Question, Answer, Theme, UserPreferences, ActivityLog)
+├── DAL/             # Repositories + Database.cs (+ appels procédures stockées)
+├── Views/           # Vues Avalonia (Login, Main, Editor, QuizPlayer, AdminLogs, AdminUsers)
+├── Services/        # LocalizationManager, PdfGenerator, ActivityLogger
 └── Resources/       # Fichiers de traduction (fr/en)
 ```
 
