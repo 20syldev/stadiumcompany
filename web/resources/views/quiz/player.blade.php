@@ -193,6 +193,11 @@
                     style="background-color: var(--color-success);">
                 {{ __('messages.quiz.finish') }}
             </button>
+            <a x-show="showResults && submissionId" :href="'/quiz/review/' + submissionId"
+               class="px-4 py-2 rounded-lg text-sm font-semibold text-white transition hover:opacity-90"
+               style="background-color: var(--color-accent);">
+                {{ __('messages.review.view_correction') }}
+            </a>
             <a x-show="showResults" href="{{ route('dashboard') }}"
                class="px-4 py-2 rounded-lg text-sm font-medium"
                style="color: var(--color-text-secondary); border: 1px solid var(--color-border-subtle);">
@@ -234,6 +239,7 @@ function quizPlayer() {
         scoreDisplay: '',
         scorePercent: 0,
         scoreColor: '',
+        submissionId: null,
         feedbackForms: {},
         feedbackSent: Object.fromEntries(@json($alreadySentFeedback).map(id => [id, 'already'])),
         feedbackOpen: {},
@@ -341,6 +347,7 @@ function quizPlayer() {
             const score = result.score;
             const maxScore = result.maxScore;
 
+            this.submissionId = result.submissionId;
             this.scorePercent = result.percent;
             this.scoreDisplay = score + '/' + maxScore;
 

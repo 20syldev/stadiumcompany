@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     // Quiz
     Route::get('quiz/{questionnaire}', [QuizController::class, 'play'])->name('quiz.play');
     Route::post('quiz/{questionnaire}/score', [QuizController::class, 'score'])->name('quiz.score');
+    Route::get('quiz/review/{submission}', [QuizController::class, 'review'])->name('quiz.review');
 
     // PDF
     Route::get('questionnaires/{questionnaire}/pdf', [PdfController::class, 'generate'])->name('questionnaires.pdf');

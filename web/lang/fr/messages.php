@@ -203,6 +203,20 @@ return [
         'empty' => 'Aucun journal trouvé.',
     ],
 
+    'review' => [
+        'title' => 'Procès-verbal du questionnaire',
+        'theme' => 'Thème : ',
+        'questionnaire_name' => 'Nom du questionnaire : ',
+        'answers' => 'Réponses :',
+        'correct_answer' => 'Bonne réponse :',
+        'score_total' => 'Score total : :score/:max',
+        'score_label' => 'Score :',
+        'view_correction' => 'Voir la correction',
+        'back' => 'Retour au tableau de bord',
+        'tab_results' => 'Mes résultats',
+        'no_results' => 'Aucun résultat de quiz.',
+    ],
+
     'error' => [
         'source_not_found' => 'Questionnaire source non trouvé',
     ],

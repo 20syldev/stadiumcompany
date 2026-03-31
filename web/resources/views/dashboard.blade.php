@@ -15,6 +15,11 @@
                style="{{ $tab === 'published' ? 'background-color: var(--color-accent); color: white;' : 'color: var(--color-text-secondary); background-color: var(--color-bg-card);' }}">
                 {{ __('messages.main.tab_published') }}
             </a>
+            <a href="{{ route('dashboard', ['tab' => 'results']) }}"
+               class="px-4 py-2 rounded-lg text-sm font-medium transition"
+               style="{{ $tab === 'results' ? 'background-color: var(--color-accent); color: white;' : 'color: var(--color-text-secondary); background-color: var(--color-bg-card);' }}">
+                {{ __('messages.review.tab_results') }}
+            </a>
         </div>
 
         @if($tab === 'mine')
@@ -28,6 +33,54 @@
             </a>
         @endif
     </div>
+
+    <!-- Results Tab -->
+    @if($tab === 'results')
+        @if($submissions->isEmpty())
+            <div class="flex flex-col items-center justify-center py-20" style="color: var(--color-text-tertiary);">
+                <svg class="w-16 h-16 mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                </svg>
+                <p class="text-sm">{{ __('messages.review.no_results') }}</p>
+            </div>
+        @else
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                @foreach($submissions as $sub)
+                    @php
+                        $percent = $sub->max_score > 0 ? round(($sub->score / $sub->max_score) * 100) : 0;
+                    @endphp
+                    <div class="rounded-xl p-5 transition-all hover:shadow-md"
+                         style="background-color: var(--color-bg-card); border: 1px solid var(--color-border-card);">
+                        <h3 class="font-semibold text-base mb-2 line-clamp-2" style="color: var(--color-text-primary);">
+                            {{ $sub->questionnaire?->name ?? __('messages.common.unknown') }}
+                        </h3>
+                        @if($sub->questionnaire?->theme)
+                            <span class="inline-block px-2 py-0.5 rounded text-xs font-medium mb-2"
+                                  style="background-color: var(--color-accent); color: white; opacity: 0.9;">
+                                {{ $sub->questionnaire->theme->name }}
+                            </span>
+                        @endif
+                        <p class="text-sm mb-1" style="color: var(--color-text-secondary);">
+                            {{ __('messages.review.score_label') }} {{ $sub->score }}/{{ $sub->max_score }} ({{ $percent }}%)
+                        </p>
+                        <p class="text-xs mb-3" style="color: var(--color-text-tertiary);">
+                            {{ $sub->created_at->format('d/m/Y H:i') }}
+                        </p>
+                        <div class="pt-3" style="border-top: 1px solid var(--color-border-subtle);">
+                            <a href="{{ route('quiz.review', $sub) }}"
+                               class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium text-white transition hover:opacity-90"
+                               style="background-color: var(--color-accent);">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                                {{ __('messages.review.view_correction') }}
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    @else
 
     <!-- Cards Grid -->
     @php $items = $tab === 'mine' ? $myQuestionnaires : $publishedQuestionnaires; @endphp
@@ -128,6 +181,8 @@
                 </div>
             @endforeach
         </div>
+    @endif
+
     @endif
 </div>
 @endsection

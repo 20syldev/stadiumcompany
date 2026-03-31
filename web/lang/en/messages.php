@@ -203,6 +203,20 @@ return [
         'empty' => 'No logs found.',
     ],
 
+    'review' => [
+        'title' => 'Quiz Report',
+        'theme' => 'Theme: ',
+        'questionnaire_name' => 'Quiz name: ',
+        'answers' => 'Answers:',
+        'correct_answer' => 'Correct answer:',
+        'score_total' => 'Total score: :score/:max',
+        'score_label' => 'Score:',
+        'view_correction' => 'View correction',
+        'back' => 'Back to dashboard',
+        'tab_results' => 'My results',
+        'no_results' => 'No quiz results yet.',
+    ],
+
     'error' => [
         'source_not_found' => 'Source questionnaire not found',
     ],

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Questionnaire;
+use App\Models\QuizSubmission;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -25,6 +26,11 @@ class DashboardController extends Controller
             ->orderByDesc('id')
             ->get();
 
-        return view('dashboard', compact('myQuestionnaires', 'publishedQuestionnaires', 'tab'));
+        $submissions = QuizSubmission::where('user_id', $user->id)
+            ->with('questionnaire.theme')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('dashboard', compact('myQuestionnaires', 'publishedQuestionnaires', 'submissions', 'tab'));
     }
 }

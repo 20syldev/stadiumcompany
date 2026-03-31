@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\QuestionFeedback;
 use App\Models\Questionnaire;
+use App\Models\QuizSubmission;
 use App\Services\ActivityLogService;
 use App\Services\QuizScoringService;
 use App\Services\QuizService;
@@ -57,5 +58,38 @@ class QuizController extends Controller
         );
 
         return response()->json([...$result, 'submissionId' => $submission->id]);
+    }
+
+    public function review(QuizSubmission $submission)
+    {
+        abort_unless($submission->user_id === auth()->id(), 403);
+
+        $submission->load([
+            'questionnaire.theme',
+            'questionnaire.questions.answers',
+            'quizAnswers',
+        ]);
+
+        $questionnaire = $submission->questionnaire;
+        $userAnswerIds = $submission->quizAnswers->pluck('answer_id')->toArray();
+
+        $questionsData = $questionnaire->questions->sortBy('number')->map(function ($question) use ($userAnswerIds) {
+            $correctAnswers = $question->answers->where('is_correct', true)->pluck('label')->toArray();
+
+            return [
+                'number' => $question->number,
+                'label' => $question->label,
+                'answer_type' => $question->answer_type,
+                'answers' => $question->answers->map(fn ($a) => [
+                    'label' => $a->label,
+                    'is_correct' => $a->is_correct,
+                    'was_selected' => in_array($a->id, $userAnswerIds),
+                ])->toArray(),
+                'correct_labels' => $correctAnswers,
+                'all_labels' => $question->answers->pluck('label')->toArray(),
+            ];
+        });
+
+        return view('quiz.review', compact('submission', 'questionnaire', 'questionsData'));
     }
 }
