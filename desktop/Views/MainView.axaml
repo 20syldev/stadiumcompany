@@ -110,6 +110,19 @@
                                     <TextBlock x:Name="TxtAdmin" Text="Admin" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
                                 </StackPanel>
                             </Button>
+                            <Button x:Name="BtnAdminUsers"
+                                    Background="Transparent"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Left"
+                                    Padding="12,10"
+                                    CornerRadius="6"
+                                    IsVisible="False"
+                                    Click="BtnAdminUsers_Click">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <ui:SymbolIcon Symbol="People" FontSize="16" Foreground="{DynamicResource TextTertiaryBrush}"/>
+                                    <TextBlock x:Name="TxtAdminUsers" Text="Manage Users" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                            </Button>
                             <Border Background="{DynamicResource BorderSubtleBrush}" Height="1" Margin="6,4"/>
                             <Button Background="Transparent"
                                     HorizontalAlignment="Stretch"

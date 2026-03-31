@@ -179,5 +179,21 @@
   "admin.previous": "Previous",
   "admin.next": "Next",
   "admin.back": "Back",
-  "admin.no_results": "No logs found."
+  "admin.no_results": "No logs found.",
+
+  "admin.users_title": "User Management",
+  "admin.btn_users": "Manage Users",
+  "admin.archive_inactive": "Archive inactive users",
+  "admin.archive_confirm_title": "Archive inactive users",
+  "admin.archive_confirm_message": "This will archive all participants who haven't taken a quiz in 180+ days.\nTheir activity logs, quiz data, and feedbacks will be permanently deleted.\nContinue?",
+  "admin.archive_result": "{0} user(s) archived.",
+  "admin.unarchive": "Unarchive",
+  "admin.unarchive_confirm_title": "Unarchive user",
+  "admin.unarchive_confirm_message": "Unarchive this user?\nNote: previously deleted data cannot be recovered.",
+  "admin.col_email": "Email",
+  "admin.col_name": "Name",
+  "admin.col_archived": "Archived",
+  "admin.col_created": "Created",
+  "admin.no_users": "No users found.",
+  "admin.user_count": "{0} user(s)"
 }

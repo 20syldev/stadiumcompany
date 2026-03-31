@@ -1,0 +1,108 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             x:Class="StadiumCompany.Views.AdminUsersView">
+
+    <Grid Margin="30,25,30,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="BtnBack"
+                    Grid.Column="0"
+                    Background="Transparent"
+                    Padding="10,8"
+                    CornerRadius="8"
+                    VerticalAlignment="Center"
+                    Click="BtnBack_Click">
+                <ui:SymbolIcon Symbol="Back" FontSize="18" Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </Button>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12" Margin="12,0,0,0">
+                <ui:SymbolIcon Symbol="People"
+                               FontSize="28"
+                               Foreground="{DynamicResource AccentBrush}"/>
+                <TextBlock x:Name="TxtTitle"
+                           Text="User Management"
+                           FontSize="24"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <Button x:Name="BtnArchiveInactive"
+                    Grid.Column="2"
+                    Padding="14,8"
+                    CornerRadius="8"
+                    Classes="accent"
+                    Click="BtnArchiveInactive_Click">
+                <TextBlock x:Name="TxtBtnArchive" Text="Archive inactive users" FontSize="13" FontWeight="SemiBold"/>
+            </Button>
+        </Grid>
+
+        <!-- Info bar -->
+        <Border Grid.Row="1"
+                Background="{DynamicResource CardBackgroundBrush}"
+                CornerRadius="10"
+                Padding="16,12"
+                BorderBrush="{DynamicResource BorderSubtleBrush}"
+                BorderThickness="1"
+                Margin="0,20,0,12">
+            <StackPanel Orientation="Horizontal" Spacing="16">
+                <TextBlock x:Name="TxtUserCount"
+                           Text=""
+                           FontSize="13"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           VerticalAlignment="Center"/>
+                <Button x:Name="BtnRefresh"
+                        Background="Transparent"
+                        Padding="10,8"
+                        CornerRadius="8"
+                        Click="BtnRefresh_Click">
+                    <ui:SymbolIcon Symbol="Refresh" FontSize="16" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Data content -->
+        <Grid Grid.Row="2">
+            <DataGrid x:Name="UsersDataGrid"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserSortColumns="False"
+                      CanUserResizeColumns="True"
+                      GridLinesVisibility="Horizontal"
+                      BorderThickness="1"
+                      BorderBrush="{DynamicResource BorderSubtleBrush}"
+                      CornerRadius="10"/>
+
+            <StackPanel x:Name="EmptyState"
+                        IsVisible="False"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Spacing="12">
+                <ui:SymbolIcon Symbol="People"
+                               FontSize="48"
+                               Foreground="{DynamicResource TextTertiaryBrush}"
+                               HorizontalAlignment="Center"
+                               Opacity="0.5"/>
+                <TextBlock x:Name="TxtEmptyState"
+                           Text="No users found."
+                           FontSize="16"
+                           Foreground="{DynamicResource TextTertiaryBrush}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</UserControl>

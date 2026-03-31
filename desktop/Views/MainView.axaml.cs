@@ -52,6 +52,7 @@ public partial class MainView : UserControl
 
         // Admin button visibility
         BtnAdmin.IsVisible = user.IsAdmin;
+        BtnAdminUsers.IsVisible = user.IsAdmin;
 
         // Load saved preferences
         LoadUserPreferences();
@@ -430,6 +431,7 @@ public partial class MainView : UserControl
         TxtLanguageToggle.Text = loc.T("user_menu.language");
         TxtLogout.Text = loc.T("user_menu.logout");
         TxtAdmin.Text = loc.T("admin.btn_admin");
+        TxtAdminUsers.Text = loc.T("admin.btn_users");
 
         // Reload data to update translated fields
         LoadQuestionnaires();
@@ -531,6 +533,11 @@ public partial class MainView : UserControl
         _mainWindow.ShowAdminView(_currentUser);
     }
 
+    private void BtnAdminUsers_Click(object? sender, RoutedEventArgs e)
+    {
+        UserMenuPopup.IsOpen = false;
+        _mainWindow.ShowAdminUsersView(_currentUser);
+    }
 
     private void BtnLogout_Click(object? sender, RoutedEventArgs e)
     {

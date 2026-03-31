@@ -8,6 +8,7 @@ public class User
     public string? LastName { get; set; }
     public string? FirstName { get; set; }
     public bool IsAdmin { get; set; }
+    public bool IsArchived { get; set; }
     public DateTime CreatedAt { get; set; }
 
     public string? FullName

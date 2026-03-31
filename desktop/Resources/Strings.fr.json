@@ -179,5 +179,21 @@
   "admin.previous": "Précédent",
   "admin.next": "Suivant",
   "admin.back": "Retour",
-  "admin.no_results": "Aucun log trouvé."
+  "admin.no_results": "Aucun log trouvé.",
+
+  "admin.users_title": "Gestion des utilisateurs",
+  "admin.btn_users": "Gérer les utilisateurs",
+  "admin.archive_inactive": "Archiver les utilisateurs inactifs",
+  "admin.archive_confirm_title": "Archiver les utilisateurs inactifs",
+  "admin.archive_confirm_message": "Ceci archivera tous les participants n'ayant pas répondu à un quiz depuis 180 jours ou plus.\nLeurs logs d'activité, données de quiz et feedbacks seront définitivement supprimés.\nContinuer ?",
+  "admin.archive_result": "{0} utilisateur(s) archivé(s).",
+  "admin.unarchive": "Désarchiver",
+  "admin.unarchive_confirm_title": "Désarchiver l'utilisateur",
+  "admin.unarchive_confirm_message": "Désarchiver cet utilisateur ?\nAttention : les données supprimées ne peuvent pas être récupérées.",
+  "admin.col_email": "Email",
+  "admin.col_name": "Nom",
+  "admin.col_archived": "Archivé",
+  "admin.col_created": "Créé le",
+  "admin.no_users": "Aucun utilisateur trouvé.",
+  "admin.user_count": "{0} utilisateur(s)"
 }
