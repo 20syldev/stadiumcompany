@@ -20,6 +20,7 @@ class User extends Authenticatable
         'last_name',
         'first_name',
         'is_admin',
+        'is_archived',
     ];
 
     protected $hidden = [
@@ -32,6 +33,7 @@ class User extends Authenticatable
             'created_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'is_archived' => 'boolean',
         ];
     }
 

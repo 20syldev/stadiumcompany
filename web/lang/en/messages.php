@@ -24,6 +24,7 @@ return [
         'error_credentials' => 'Invalid email or password.',
         'error_email_exists' => 'This email already exists.',
         'error_register' => 'Error creating the account.',
+        'error_archived' => 'Your account has been archived. Please contact an administrator.',
         'register_success_title' => 'Registration successful',
         'register_success_message' => 'Account created successfully! You can now sign in.',
     ],

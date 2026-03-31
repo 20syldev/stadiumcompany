@@ -24,6 +24,7 @@ return [
         'error_credentials' => 'Identifiant ou mot de passe incorrect.',
         'error_email_exists' => 'Cet email existe déjà.',
         'error_register' => 'Erreur lors de la création du compte.',
+        'error_archived' => 'Votre compte a été archivé. Veuillez contacter un administrateur.',
         'register_success_title' => 'Inscription réussie',
         'register_success_message' => 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.',
     ],

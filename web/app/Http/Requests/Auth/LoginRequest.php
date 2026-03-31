@@ -49,6 +49,14 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        if (Auth::user()->is_archived) {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => __('messages.login.error_archived'),
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 
