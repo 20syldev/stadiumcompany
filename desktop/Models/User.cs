@@ -9,6 +9,8 @@ public class User
     public string? FirstName { get; set; }
     public bool IsAdmin { get; set; }
     public bool IsArchived { get; set; }
+    public bool IsLocked { get; set; }
+    public int FailedLoginAttempts { get; set; }
     public DateTime CreatedAt { get; set; }
 
     public string? FullName

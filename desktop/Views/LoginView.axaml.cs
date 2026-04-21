@@ -91,7 +91,18 @@ public partial class LoginView : UserControl
 
     private void Login()
     {
-        var user = _userRepository.Authenticate(TxtLogin.Text!.Trim(), TxtPassword.Text!);
+        var email = TxtLogin.Text!.Trim();
+        var loc = LocalizationManager.Instance;
+
+        // Check lock status before full authentication to give a specific message
+        var isLocked = _userRepository.IsLocked(email);
+        if (isLocked == true)
+        {
+            ShowError(loc.T("login.error_locked"));
+            return;
+        }
+
+        var user = _userRepository.Authenticate(email, TxtPassword.Text!);
         if (user != null)
         {
             ActivityLogger.Log(user.Id, "login", "user", user.Id);
@@ -99,8 +110,9 @@ public partial class LoginView : UserControl
         }
         else
         {
-            var loc = LocalizationManager.Instance;
-            ShowError(loc.T("login.error_credentials"));
+            // Re-check if now locked after this failed attempt
+            var nowLocked = _userRepository.IsLocked(email);
+            ShowError(nowLocked == true ? loc.T("login.error_locked") : loc.T("login.error_credentials"));
         }
     }
 

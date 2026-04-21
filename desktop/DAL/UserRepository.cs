@@ -19,12 +19,44 @@ public class UserRepository
         {
             var user = MapUser(reader);
             if (user.IsArchived) return null;
+            if (user.IsLocked) return null;
             if (BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
+                reader.Close();
+                RecordFailedLogin(email, reset: true, userId: user.Id);
                 return user;
+            }
+            else
+            {
+                reader.Close();
+                RecordFailedLogin(email, reset: false, userId: null);
+                return null;
             }
         }
         return null;
+    }
+
+    private static void RecordFailedLogin(string email, bool reset, int? userId)
+    {
+        try
+        {
+            using var connection = Database.GetConnection();
+            connection.Open();
+
+            if (reset && userId.HasValue)
+            {
+                using var cmd = new NpgsqlCommand("SELECT reset_failed_login(@userId)", connection);
+                cmd.Parameters.AddWithValue("@userId", userId.Value);
+                cmd.ExecuteNonQuery();
+            }
+            else
+            {
+                using var cmd = new NpgsqlCommand("SELECT record_failed_login(@email)", connection);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        catch { /* Non-bloquant si la fonction n'existe pas encore */ }
     }
 
     public bool Register(User user)
@@ -84,6 +116,21 @@ public class UserRepository
         return Convert.ToInt32(command.ExecuteScalar());
     }
 
+    public bool? IsLocked(string email)
+    {
+        try
+        {
+            using var connection = Database.GetConnection();
+            connection.Open();
+
+            using var command = new NpgsqlCommand("SELECT is_locked FROM users WHERE email = @email", connection);
+            command.Parameters.AddWithValue("@email", email);
+            var result = command.ExecuteScalar();
+            return result == null || result == DBNull.Value ? null : Convert.ToBoolean(result);
+        }
+        catch { return null; }
+    }
+
     public bool UnarchiveUser(int userId)
     {
         using var connection = Database.GetConnection();
@@ -96,6 +143,9 @@ public class UserRepository
 
     private static User MapUser(NpgsqlDataReader reader)
     {
+        var isLockedOrdinal = reader.GetOrdinal("is_locked");
+        var failedAttemptsOrdinal = reader.GetOrdinal("failed_login_attempts");
+
         return new User
         {
             Id = reader.GetInt32(reader.GetOrdinal("id")),
@@ -105,6 +155,8 @@ public class UserRepository
             FirstName = reader.IsDBNull(reader.GetOrdinal("first_name")) ? null : reader.GetString(reader.GetOrdinal("first_name")),
             IsAdmin = !reader.IsDBNull(reader.GetOrdinal("is_admin")) && reader.GetBoolean(reader.GetOrdinal("is_admin")),
             IsArchived = !reader.IsDBNull(reader.GetOrdinal("is_archived")) && reader.GetBoolean(reader.GetOrdinal("is_archived")),
+            IsLocked = !reader.IsDBNull(isLockedOrdinal) && reader.GetBoolean(isLockedOrdinal),
+            FailedLoginAttempts = reader.IsDBNull(failedAttemptsOrdinal) ? 0 : reader.GetInt32(failedAttemptsOrdinal),
             CreatedAt = reader.GetDateTime(reader.GetOrdinal("created_at"))
         };
     }

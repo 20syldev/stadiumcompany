@@ -195,5 +195,7 @@
   "admin.col_archived": "Archived",
   "admin.col_created": "Created",
   "admin.no_users": "No users found.",
-  "admin.user_count": "{0} user(s)"
+  "admin.user_count": "{0} user(s)",
+
+  "login.error_locked": "Account locked after too many failed attempts. Contact an administrator."
 }

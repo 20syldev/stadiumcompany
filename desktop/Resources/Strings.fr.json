@@ -195,5 +195,7 @@
   "admin.col_archived": "Archivé",
   "admin.col_created": "Créé le",
   "admin.no_users": "Aucun utilisateur trouvé.",
-  "admin.user_count": "{0} utilisateur(s)"
+  "admin.user_count": "{0} utilisateur(s)",
+
+  "login.error_locked": "Compte verrouillé après trop de tentatives. Contactez un administrateur."
 }
