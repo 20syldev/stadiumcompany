@@ -22,6 +22,7 @@ class Questionnaire extends Model
     {
         return [
             'published' => 'boolean',
+            'created_at' => 'datetime',
         ];
     }
 

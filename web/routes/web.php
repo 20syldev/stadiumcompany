@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminLogController;
+use App\Http\Controllers\Admin\AdminRankingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\QuizController;
@@ -18,7 +19,8 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Questionnaire CRUD
+    // Questionnaire CRUD — export must come before the resource (avoids {questionnaire} match)
+    Route::get('questionnaires/export/csv', [QuestionnaireController::class, 'exportCsv'])->name('questionnaires.export.csv');
     Route::resource('questionnaires', QuestionnaireController::class)->except(['index']);
 
     // Fork & Publish
