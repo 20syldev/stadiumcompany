@@ -24,6 +24,8 @@
 
   "main.title": "Questionnaires",
   "main.welcome": "Bienvenue, {0}",
+  "main.login_count": "Nombre de connexions : {0}",
+  "main.last_login": "Dernière connexion : {0}",
   "main.new_questionnaire": "Nouveau questionnaire",
   "main.tab_mine": "Mes questionnaires",
   "main.tab_published": "Questionnaires publiés",

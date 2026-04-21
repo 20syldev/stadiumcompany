@@ -36,6 +36,26 @@ public class UserRepository
         return null;
     }
 
+    public (int LoginCount, DateTime? LastLoginAt) GetLoginStats(int userId)
+    {
+        using var connection = Database.GetConnection();
+        connection.Open();
+
+        using var command = new NpgsqlCommand("SELECT * FROM get_user_login_stats(@userId)", connection);
+        command.Parameters.AddWithValue("@userId", userId);
+
+        using var reader = command.ExecuteReader();
+        if (reader.Read())
+        {
+            var count = Convert.ToInt32(reader["login_count"]);
+            var lastLogin = reader.IsDBNull(reader.GetOrdinal("last_login_at"))
+                ? (DateTime?)null
+                : reader.GetDateTime(reader.GetOrdinal("last_login_at"));
+            return (count, lastLogin);
+        }
+        return (0, null);
+    }
+
     private static void RecordFailedLogin(string email, bool reset, int? userId)
     {
         try

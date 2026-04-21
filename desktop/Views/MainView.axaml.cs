@@ -19,8 +19,11 @@ public partial class MainView : UserControl
     private readonly User _currentUser = null!;
     private readonly QuestionnaireRepository _questionnaireRepository = new();
     private readonly UserPreferencesRepository _preferencesRepository = new();
+    private readonly UserRepository _userRepository = new();
     private bool _isDarkTheme = false;
     private bool _showingMine = true;
+    private int _loginCount = 0;
+    private DateTime? _lastLoginAt = null;
 
     private List<Questionnaire> _myQuestionnaires = [];
     private List<Questionnaire> _publishedQuestionnaires = [];
@@ -53,6 +56,9 @@ public partial class MainView : UserControl
         // Admin button visibility
         BtnAdmin.IsVisible = user.IsAdmin;
         BtnAdminUsers.IsVisible = user.IsAdmin;
+
+        // Load login stats (Besoin 1 & 2)
+        LoadLoginStats();
 
         // Load saved preferences
         LoadUserPreferences();
@@ -433,6 +439,9 @@ public partial class MainView : UserControl
         TxtAdmin.Text = loc.T("admin.btn_admin");
         TxtAdminUsers.Text = loc.T("admin.btn_users");
 
+        // Update login stats labels
+        UpdateLoginStatsText();
+
         // Reload data to update translated fields
         LoadQuestionnaires();
         BuildCards();
@@ -446,6 +455,26 @@ public partial class MainView : UserControl
     {
         _myQuestionnaires = _questionnaireRepository.GetByUser(_currentUser.Id);
         _publishedQuestionnaires = _questionnaireRepository.GetPublishedByOthers(_currentUser.Id);
+    }
+
+    private void LoadLoginStats()
+    {
+        try
+        {
+            var stats = _userRepository.GetLoginStats(_currentUser.Id);
+            _loginCount = stats.LoginCount;
+            _lastLoginAt = stats.LastLoginAt;
+        }
+        catch { /* Non-bloquant si la procédure n'est pas encore déployée */ }
+    }
+
+    private void UpdateLoginStatsText()
+    {
+        var loc = LocalizationManager.Instance;
+        LblLoginCount.Text = loc.T("main.login_count", _loginCount);
+        LblLastLogin.Text = _lastLoginAt.HasValue
+            ? loc.T("main.last_login", _lastLoginAt.Value.ToString("dd/MM/yyyy HH:mm"))
+            : "";
     }
 
     #endregion
