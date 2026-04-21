@@ -8,10 +8,12 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>window.__TRANSLATIONS__ = @json(trans('messages'));</script>
 </head>
 <body class="font-sans antialiased min-h-screen flex items-center justify-center" style="background-color: var(--color-bg-app); color: var(--color-text-primary);">
     <div class="w-full max-w-md px-6">
         {{ $slot }}
     </div>
+    <div id="cookie-consent-app"></div>
 </body>
 </html>

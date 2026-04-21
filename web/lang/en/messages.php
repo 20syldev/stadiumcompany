@@ -67,6 +67,16 @@ return [
         'empty_mine' => 'No questionnaires. Create one!',
         'empty_published' => 'No published questionnaires.',
         'fork_suffix' => '(copy)',
+        'stats_played' => 'Played :count time(s)',
+        'stats_avg_score' => 'Avg. :score%',
+        'no_results_search' => 'No results for this search.',
+        'search_placeholder' => 'Search questionnaires...',
+        'filter_all_themes' => 'All themes',
+        'sort_date' => 'Most recent',
+        'sort_popularity' => 'Most played',
+        'sort_name' => 'Alphabetical',
+        'view_grid' => 'Grid',
+        'view_list' => 'List',
     ],
 
     'user_menu' => [
@@ -90,6 +100,8 @@ return [
         'cancel' => 'Cancel',
         'save' => 'Save',
         'saved' => 'Saved',
+        'save_draft' => 'Save as draft',
+        'publish' => 'Publish',
         'add_answer' => 'Add answer',
         'answer_placeholder' => 'Enter the answer...',
         'distribute_points' => 'Distribute points',
@@ -141,6 +153,7 @@ return [
         'results_title' => 'Quiz complete!',
         'answers_saved' => 'Your answers have been saved.',
         'score' => 'Score:',
+        'ranking' => 'Your ranking:',
     ],
 
     'theme_label' => [
@@ -202,6 +215,18 @@ return [
         'col_details' => 'Details',
         'col_source' => 'Source',
         'empty' => 'No logs found.',
+        'rankings_title' => 'Rankings',
+        'rankings_search' => 'Search questionnaires...',
+        'rankings_back' => 'Back to list',
+        'rankings_participants' => ':count participant(s)',
+        'rankings_avg' => 'Avg. :score%',
+        'rankings_empty' => 'No questionnaires found.',
+        'rankings_leaderboard_empty' => 'No submissions yet.',
+        'col_rank' => 'Rank',
+        'col_score' => 'Score',
+        'col_percent' => '%',
+        'col_name' => 'Name',
+        'col_email' => 'Email',
     ],
 
     'review' => [
@@ -212,10 +237,21 @@ return [
         'correct_answer' => 'Correct answer:',
         'score_total' => 'Total score: :score/:max',
         'score_label' => 'Score:',
+        'ranking' => 'Ranking:',
         'view_correction' => 'View correction',
         'back' => 'Back to dashboard',
         'tab_results' => 'My results',
         'no_results' => 'No quiz results yet.',
+        'answer_correct_selected' => 'Correct answer!',
+        'answer_correct_missed' => 'Expected answer (not selected)',
+        'answer_wrong_selected' => 'Your answer (incorrect)',
+    ],
+
+    'cookies' => [
+        'title' => 'Cookie notice',
+        'message' => 'This site uses cookies to ensure you get the best experience. By continuing, you agree to our use of cookies.',
+        'accept' => 'Accept',
+        'decline' => 'Decline',
     ],
 
     'error' => [

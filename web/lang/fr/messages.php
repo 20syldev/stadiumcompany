@@ -67,6 +67,16 @@ return [
         'empty_mine' => 'Aucun questionnaire. Créez-en un !',
         'empty_published' => 'Aucun questionnaire publié.',
         'fork_suffix' => '(copie)',
+        'stats_played' => ':count fois joué',
+        'stats_avg_score' => 'Moy. :score%',
+        'no_results_search' => 'Aucun résultat pour cette recherche.',
+        'search_placeholder' => 'Rechercher des questionnaires...',
+        'filter_all_themes' => 'Tous les thèmes',
+        'sort_date' => 'Plus récents',
+        'sort_popularity' => 'Plus joués',
+        'sort_name' => 'Alphabétique',
+        'view_grid' => 'Grille',
+        'view_list' => 'Liste',
     ],
 
     'user_menu' => [
@@ -90,6 +100,8 @@ return [
         'cancel' => 'Annuler',
         'save' => 'Enregistrer',
         'saved' => 'Enregistré',
+        'save_draft' => 'Enregistrer le brouillon',
+        'publish' => 'Publier',
         'add_answer' => 'Ajouter une réponse',
         'answer_placeholder' => 'Saisissez la réponse...',
         'distribute_points' => 'Distribuer les points',
@@ -141,6 +153,7 @@ return [
         'results_title' => 'Quiz terminé !',
         'answers_saved' => 'Vos réponses sont enregistrées.',
         'score' => 'Score :',
+        'ranking' => 'Votre classement :',
     ],
 
     'theme_label' => [
@@ -202,6 +215,18 @@ return [
         'col_details' => 'Détails',
         'col_source' => 'Source',
         'empty' => 'Aucun journal trouvé.',
+        'rankings_title' => 'Classements',
+        'rankings_search' => 'Rechercher des questionnaires...',
+        'rankings_back' => 'Retour à la liste',
+        'rankings_participants' => ':count participant(s)',
+        'rankings_avg' => 'Moy. :score%',
+        'rankings_empty' => 'Aucun questionnaire trouvé.',
+        'rankings_leaderboard_empty' => 'Aucune soumission.',
+        'col_rank' => 'Rang',
+        'col_score' => 'Score',
+        'col_percent' => '%',
+        'col_name' => 'Nom',
+        'col_email' => 'E-mail',
     ],
 
     'review' => [
@@ -212,10 +237,21 @@ return [
         'correct_answer' => 'Bonne réponse :',
         'score_total' => 'Score total : :score/:max',
         'score_label' => 'Score :',
+        'ranking' => 'Classement :',
         'view_correction' => 'Voir la correction',
         'back' => 'Retour au tableau de bord',
         'tab_results' => 'Mes résultats',
         'no_results' => 'Aucun résultat de quiz.',
+        'answer_correct_selected' => 'Bonne réponse !',
+        'answer_correct_missed' => 'Réponse attendue (non sélectionnée)',
+        'answer_wrong_selected' => 'Votre réponse (incorrecte)',
+    ],
+
+    'cookies' => [
+        'title' => 'Avis sur les cookies',
+        'message' => 'Ce site utilise des cookies pour vous offrir la meilleure expérience. En continuant, vous acceptez notre utilisation des cookies.',
+        'accept' => 'Accepter',
+        'decline' => 'Refuser',
     ],
 
     'error' => [

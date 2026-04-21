@@ -1,9 +1,15 @@
 @import 'tailwindcss';
 @source '../views';
+@source '../js/components';
 @plugin '@tailwindcss/forms';
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+    --color-answer-correct-bg: rgba(34, 197, 94, 0.1);
+    --color-answer-correct-border: rgba(34, 197, 94, 0.5);
+    --color-answer-wrong-bg: rgba(239, 68, 68, 0.1);
+    --color-answer-wrong-border: rgba(239, 68, 68, 0.5);
+
     --color-accent: #667eea;
     --color-accent-hover: #5a6fd6;
     --color-bg-app: #f8fafc;
@@ -20,6 +26,11 @@
 }
 
 .dark {
+    --color-answer-correct-bg: rgba(74, 222, 128, 0.1);
+    --color-answer-correct-border: rgba(74, 222, 128, 0.4);
+    --color-answer-wrong-bg: rgba(248, 113, 113, 0.1);
+    --color-answer-wrong-border: rgba(248, 113, 113, 0.4);
+
     --color-accent: #818cf8;
     --color-accent-hover: #6d7af0;
     --color-bg-app: #1e1e2e;
