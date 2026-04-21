@@ -114,6 +114,19 @@
                             Click="BtnToggleMode_Click"/>
                 </StackPanel>
 
+                <!-- RGPD link -->
+                <Button x:Name="BtnGdpr"
+                        Background="Transparent"
+                        HorizontalAlignment="Center"
+                        Padding="4,0"
+                        Click="BtnGdpr_Click">
+                    <TextBlock x:Name="TxtGdpr"
+                               Text="Politique de confidentialité (RGPD)"
+                               FontSize="12"
+                               Foreground="{DynamicResource TextTertiaryBrush}"
+                               TextDecorations="Underline"/>
+                </Button>
+
             </StackPanel>
         </Border>
     </Grid>

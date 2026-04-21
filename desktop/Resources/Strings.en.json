@@ -215,5 +215,9 @@
   "pdf.users_col_created": "Created",
   "pdf.users_status_active": "Active",
   "pdf.users_status_archived": "Archived",
-  "admin.export_pdf_users": "Export PDF"
+  "admin.export_pdf_users": "Export PDF",
+
+  "gdpr.button": "Privacy Policy (GDPR)",
+  "gdpr.title": "Privacy Policy",
+  "gdpr.content": "PRIVACY POLICY — STADIUM COMPANY\n\n1. DATA CONTROLLER\nStadium Company is the controller of your personal data.\n\n2. DATA COLLECTED\nWe collect the following data: email address, last name, first name, login history, questionnaire activities and quiz results.\n\n3. PURPOSES OF PROCESSING\nYour data is processed for: authentication and account management, tracking your activities on the platform, and service improvement.\n\n4. LEGAL BASIS\nProcessing is based on your consent at registration and on the platform's legitimate interest in security.\n\n5. RETENTION PERIOD\nYour data is kept for the duration of active use of your account. In case of prolonged inactivity (180 days), the account may be archived.\n\n6. YOUR RIGHTS\nUnder GDPR, you have the rights of access, rectification, erasure, and data portability. To exercise these rights, contact the platform administrator.\n\n7. COOKIES\nThe application uses only technical cookies necessary for operation (session, preferences). No advertising or tracking cookies are used."
 }

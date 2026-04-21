@@ -54,6 +54,7 @@ public partial class LoginView : UserControl
         TxtFirstName.Watermark = loc.T("login.firstname_placeholder");
         LblLastName.Text = loc.T("login.lastname");
         TxtLastName.Watermark = loc.T("login.lastname_placeholder");
+        TxtGdpr.Text = loc.T("gdpr.button");
     }
 
     private void BtnToggleMode_Click(object? sender, RoutedEventArgs e)
@@ -114,6 +115,29 @@ public partial class LoginView : UserControl
             var nowLocked = _userRepository.IsLocked(email);
             ShowError(nowLocked == true ? loc.T("login.error_locked") : loc.T("login.error_credentials"));
         }
+    }
+
+    private async void BtnGdpr_Click(object? sender, RoutedEventArgs e)
+    {
+        var loc = LocalizationManager.Instance;
+        var topLevel = TopLevel.GetTopLevel(this);
+        var dialog = new ContentDialog
+        {
+            Title = loc.T("gdpr.title"),
+            Content = new ScrollViewer
+            {
+                MaxHeight = 420,
+                Content = new TextBlock
+                {
+                    Text = loc.T("gdpr.content"),
+                    TextWrapping = Avalonia.Media.TextWrapping.Wrap,
+                    FontSize = 13,
+                    Padding = new Avalonia.Thickness(4)
+                }
+            },
+            CloseButtonText = loc.T("common.ok")
+        };
+        await dialog.ShowAsync(topLevel);
     }
 
     private async void Register()

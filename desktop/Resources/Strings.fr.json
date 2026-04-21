@@ -215,5 +215,9 @@
   "pdf.users_col_created": "Créé le",
   "pdf.users_status_active": "Actif",
   "pdf.users_status_archived": "Archivé",
-  "admin.export_pdf_users": "Exporter PDF"
+  "admin.export_pdf_users": "Exporter PDF",
+
+  "gdpr.button": "Politique de confidentialité (RGPD)",
+  "gdpr.title": "Politique de confidentialité",
+  "gdpr.content": "POLITIQUE DE CONFIDENTIALITÉ — STADIUM COMPANY\n\n1. RESPONSABLE DU TRAITEMENT\nStadium Company est le responsable du traitement de vos données personnelles.\n\n2. DONNÉES COLLECTÉES\nNous collectons les données suivantes : adresse e-mail, nom, prénom, historique de connexion, activités liées aux questionnaires et résultats de quiz.\n\n3. FINALITÉS DU TRAITEMENT\nVos données sont traitées pour : l'authentification et la gestion de votre compte, le suivi de vos activités sur la plateforme, et l'amélioration du service.\n\n4. BASE LÉGALE\nLe traitement repose sur votre consentement lors de l'inscription et sur l'intérêt légitime de la plateforme pour la sécurité.\n\n5. DURÉE DE CONSERVATION\nVos données sont conservées pendant toute la durée d'utilisation active de votre compte. En cas d'inactivité prolongée (180 jours), le compte peut être archivé.\n\n6. VOS DROITS\nConformément au RGPD, vous disposez des droits d'accès, de rectification, d'effacement et de portabilité de vos données. Pour exercer ces droits, contactez l'administrateur de la plateforme.\n\n7. COOKIES\nL'application utilise uniquement des cookies techniques nécessaires au fonctionnement (session, préférences). Aucun cookie publicitaire ou de traçage n'est utilisé."
 }
