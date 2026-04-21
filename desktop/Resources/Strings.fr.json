@@ -199,5 +199,9 @@
   "admin.no_users": "Aucun utilisateur trouvé.",
   "admin.user_count": "{0} utilisateur(s)",
 
+  "admin.btn_connections": "Historique connexions",
+  "admin.connections_title": "Historique des connexions",
+  "admin.no_connections": "Aucune connexion trouvée.",
+
   "login.error_locked": "Compte verrouillé après trop de tentatives. Contactez un administrateur."
 }

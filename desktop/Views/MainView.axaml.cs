@@ -56,6 +56,7 @@ public partial class MainView : UserControl
         // Admin button visibility
         BtnAdmin.IsVisible = user.IsAdmin;
         BtnAdminUsers.IsVisible = user.IsAdmin;
+        BtnAdminConnections.IsVisible = user.IsAdmin;
 
         // Load login stats (Besoin 1 & 2)
         LoadLoginStats();
@@ -438,6 +439,7 @@ public partial class MainView : UserControl
         TxtLogout.Text = loc.T("user_menu.logout");
         TxtAdmin.Text = loc.T("admin.btn_admin");
         TxtAdminUsers.Text = loc.T("admin.btn_users");
+        TxtAdminConnections.Text = loc.T("admin.btn_connections");
 
         // Update login stats labels
         UpdateLoginStatsText();
@@ -566,6 +568,12 @@ public partial class MainView : UserControl
     {
         UserMenuPopup.IsOpen = false;
         _mainWindow.ShowAdminUsersView(_currentUser);
+    }
+
+    private void BtnAdminConnections_Click(object? sender, RoutedEventArgs e)
+    {
+        UserMenuPopup.IsOpen = false;
+        _mainWindow.ShowAdminConnectionsView(_currentUser);
     }
 
     private void BtnLogout_Click(object? sender, RoutedEventArgs e)

@@ -13,4 +13,5 @@ public class ActivityLog
 
     // Joined from users table for display
     public string? UserName { get; set; }
+    public string? UserEmail { get; set; }
 }

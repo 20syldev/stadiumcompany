@@ -1,0 +1,138 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             x:Class="StadiumCompany.Views.AdminConnectionsView">
+
+    <Grid Margin="30,25,30,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="BtnBack" Grid.Column="0" Background="Transparent"
+                    Padding="10,8" CornerRadius="8" VerticalAlignment="Center"
+                    Click="BtnBack_Click">
+                <ui:SymbolIcon Symbol="Back" FontSize="18"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </Button>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12" Margin="12,0,0,0">
+                <ui:SymbolIcon Symbol="Clock" FontSize="28"
+                               Foreground="{DynamicResource AccentBrush}"/>
+                <TextBlock x:Name="TxtTitle"
+                           Text="Historique des connexions"
+                           FontSize="24"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Refresh -->
+        <Grid Grid.Row="1" Margin="0,20,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="BtnRefresh" Grid.Column="1" Background="Transparent"
+                    Padding="10,8" CornerRadius="8" Click="BtnRefresh_Click">
+                <ui:SymbolIcon Symbol="Refresh" FontSize="18"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </Button>
+        </Grid>
+
+        <!-- Filters -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource CardBackgroundBrush}"
+                CornerRadius="10" Padding="16,12"
+                BorderBrush="{DynamicResource BorderSubtleBrush}"
+                BorderThickness="1" Margin="0,0,0,12">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <TextBlock x:Name="TxtFrom"
+                           Text="Du"
+                           FontSize="13"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           VerticalAlignment="Center"/>
+                <CalendarDatePicker x:Name="DpFrom" Width="160" Height="36" CornerRadius="8"/>
+
+                <TextBlock x:Name="TxtTo"
+                           Text="Au"
+                           FontSize="13"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           VerticalAlignment="Center"/>
+                <CalendarDatePicker x:Name="DpTo" Width="160" Height="36" CornerRadius="8"/>
+
+                <Button x:Name="BtnSearch" Padding="14,8" CornerRadius="8"
+                        Classes="accent" Click="BtnSearch_Click">
+                    <TextBlock x:Name="TxtBtnSearch" Text="Rechercher"
+                               FontSize="13" FontWeight="SemiBold"/>
+                </Button>
+
+                <Button x:Name="BtnReset" Background="Transparent" Padding="14,8"
+                        CornerRadius="8" Click="BtnReset_Click">
+                    <TextBlock x:Name="TxtBtnReset" Text="Reinitialiser"
+                               FontSize="13"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- DataGrid -->
+        <Grid Grid.Row="3">
+            <DataGrid x:Name="ConnectionsDataGrid"
+                      AutoGenerateColumns="False" IsReadOnly="True"
+                      CanUserSortColumns="False" CanUserResizeColumns="True"
+                      GridLinesVisibility="Horizontal" BorderThickness="1"
+                      BorderBrush="{DynamicResource BorderSubtleBrush}"
+                      CornerRadius="10"/>
+
+            <StackPanel x:Name="EmptyState" IsVisible="False"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Spacing="12">
+                <ui:SymbolIcon Symbol="Clock" FontSize="48"
+                               Foreground="{DynamicResource TextTertiaryBrush}"
+                               HorizontalAlignment="Center" Opacity="0.5"/>
+                <TextBlock x:Name="TxtEmptyState"
+                           Text="Aucune connexion trouvee."
+                           FontSize="16"
+                           Foreground="{DynamicResource TextTertiaryBrush}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Pagination -->
+        <Grid Grid.Row="4" Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="16"
+                        HorizontalAlignment="Center">
+                <Button x:Name="BtnPrevious" Padding="14,8" CornerRadius="8"
+                        Click="BtnPrevious_Click">
+                    <TextBlock x:Name="TxtBtnPrevious" Text="Precedent" FontSize="13"/>
+                </Button>
+                <TextBlock x:Name="TxtPageInfo" Text="Page 1"
+                           FontSize="13"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           VerticalAlignment="Center"/>
+                <Button x:Name="BtnNext" Padding="14,8" CornerRadius="8"
+                        Click="BtnNext_Click">
+                    <TextBlock x:Name="TxtBtnNext" Text="Suivant" FontSize="13"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</UserControl>

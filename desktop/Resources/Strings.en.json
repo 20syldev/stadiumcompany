@@ -199,5 +199,9 @@
   "admin.no_users": "No users found.",
   "admin.user_count": "{0} user(s)",
 
+  "admin.btn_connections": "Connection History",
+  "admin.connections_title": "Connection History",
+  "admin.no_connections": "No connections found.",
+
   "login.error_locked": "Account locked after too many failed attempts. Contact an administrator."
 }

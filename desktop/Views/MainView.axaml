@@ -131,6 +131,19 @@
                                     <TextBlock x:Name="TxtAdminUsers" Text="Manage Users" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
                                 </StackPanel>
                             </Button>
+                            <Button x:Name="BtnAdminConnections"
+                                    Background="Transparent"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Left"
+                                    Padding="12,10"
+                                    CornerRadius="6"
+                                    IsVisible="False"
+                                    Click="BtnAdminConnections_Click">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <ui:SymbolIcon Symbol="Clock" FontSize="16" Foreground="{DynamicResource TextTertiaryBrush}"/>
+                                    <TextBlock x:Name="TxtAdminConnections" Text="Connection History" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                            </Button>
                             <Border Background="{DynamicResource BorderSubtleBrush}" Height="1" Margin="6,4"/>
                             <Button Background="Transparent"
                                     HorizontalAlignment="Stretch"

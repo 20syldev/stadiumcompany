@@ -67,6 +67,19 @@ public partial class MainWindow : Window
         ContentArea.Content = new AdminUsersView(this, user);
     }
 
+    public void ShowAdminConnectionsView(User user)
+    {
+        Title = "Stadium Company - Connection History";
+        MinWidth = 800;
+        MinHeight = 550;
+        CanResize = true;
+        WindowState = WindowState.Maximized;
+
+        _backgroundPanel.Bind(Panel.BackgroundProperty, this.GetResourceObservable("AppBackgroundAltBrush"));
+
+        ContentArea.Content = new AdminConnectionsView(this, user);
+    }
+
     public void Logout()
     {
         ShowLoginView();

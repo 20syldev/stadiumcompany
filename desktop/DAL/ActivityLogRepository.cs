@@ -105,6 +105,73 @@ public class ActivityLogRepository
         command.ExecuteNonQuery();
     }
 
+    public List<ActivityLog> SearchLogins(DateTime? from, DateTime? to, int limit = 50, int offset = 0)
+    {
+        using var connection = Database.GetConnection();
+        connection.Open();
+
+        var sql = @"SELECT al.*, TRIM(CONCAT(u.first_name, ' ', u.last_name)) AS user_name,
+                           u.email AS user_email
+                    FROM activity_logs al
+                    LEFT JOIN users u ON al.user_id = u.id
+                    WHERE al.action = 'login'";
+        var parameters = new List<NpgsqlParameter>();
+
+        if (from.HasValue)
+        {
+            sql += " AND al.created_at >= @from";
+            parameters.Add(new NpgsqlParameter("@from", from.Value));
+        }
+        if (to.HasValue)
+        {
+            sql += " AND al.created_at <= @to";
+            parameters.Add(new NpgsqlParameter("@to", to.Value));
+        }
+
+        sql += " ORDER BY al.created_at DESC LIMIT @limit OFFSET @offset";
+        parameters.Add(new NpgsqlParameter("@limit", limit));
+        parameters.Add(new NpgsqlParameter("@offset", offset));
+
+        using var command = new NpgsqlCommand(sql, connection);
+        command.Parameters.AddRange(parameters.ToArray());
+
+        var logs = new List<ActivityLog>();
+        using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            var log = MapActivityLog(reader);
+            log.UserEmail = reader.IsDBNull(reader.GetOrdinal("user_email"))
+                ? null : reader.GetString(reader.GetOrdinal("user_email"));
+            logs.Add(log);
+        }
+        return logs;
+    }
+
+    public int GetLoginCount(DateTime? from, DateTime? to)
+    {
+        using var connection = Database.GetConnection();
+        connection.Open();
+
+        var sql = "SELECT COUNT(*) FROM activity_logs al WHERE al.action = 'login'";
+        var parameters = new List<NpgsqlParameter>();
+
+        if (from.HasValue)
+        {
+            sql += " AND al.created_at >= @from";
+            parameters.Add(new NpgsqlParameter("@from", from.Value));
+        }
+        if (to.HasValue)
+        {
+            sql += " AND al.created_at <= @to";
+            parameters.Add(new NpgsqlParameter("@to", to.Value));
+        }
+
+        using var command = new NpgsqlCommand(sql, connection);
+        command.Parameters.AddRange(parameters.ToArray());
+
+        return Convert.ToInt32(command.ExecuteScalar());
+    }
+
     public List<string> GetDistinctActions()
     {
         using var connection = Database.GetConnection();
