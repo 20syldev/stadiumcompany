@@ -136,7 +136,7 @@ CREATE INDEX idx_feedback_user ON question_feedbacks(user_id);
 CREATE INDEX idx_feedback_question ON question_feedbacks(question_id);
 CREATE INDEX idx_users_is_archived ON users(is_archived);
 
--- Stored procedure: Archive inactive participants
+-- Archive inactive participants
 -- Archives non-admin users who haven't submitted a quiz in 180+ days
 CREATE OR REPLACE FUNCTION archive_inactive_users()
 RETURNS INTEGER AS $$
@@ -158,7 +158,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Stored procedure: Unarchive a specific user
+-- Unarchive a specific user
 CREATE OR REPLACE FUNCTION unarchive_user(p_user_id INTEGER)
 RETURNS BOOLEAN AS $$
 BEGIN
@@ -195,3 +195,107 @@ CREATE TRIGGER trg_user_archived
     AFTER UPDATE OF is_archived ON users
     FOR EACH ROW
     EXECUTE FUNCTION on_user_archived();
+
+-- Get login statistics for a user
+-- Returns login count and last login timestamp from activity_logs
+CREATE OR REPLACE FUNCTION get_user_login_stats(p_user_id INTEGER)
+RETURNS TABLE(
+    login_count  BIGINT,
+    last_login_at TIMESTAMP
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        COUNT(*)::BIGINT,
+        MAX(al.created_at)
+    FROM activity_logs al
+    WHERE al.user_id = p_user_id
+      AND al.action = 'login';
+END;
+$$ LANGUAGE plpgsql;
+
+-- Fetch user data for login authentication
+-- Returns the user record matching the given email, or empty if not found
+CREATE OR REPLACE FUNCTION get_user_for_login(p_email VARCHAR)
+RETURNS TABLE(
+    id          BIGINT,
+    email       VARCHAR,
+    password    VARCHAR,
+    first_name  VARCHAR,
+    last_name   VARCHAR,
+    is_admin    BOOLEAN,
+    is_archived BOOLEAN
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT u.id, u.email, u.password, u.first_name, u.last_name, u.is_admin, u.is_archived
+    FROM users u
+    WHERE u.email = p_email;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ============================================================
+-- Failed login tracking + account locking
+-- ============================================================
+
+-- Columns added to users table for login attempt tracking
+ALTER TABLE users ADD COLUMN IF NOT EXISTS failed_login_attempts INT NOT NULL DEFAULT 0;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS is_locked BOOLEAN NOT NULL DEFAULT FALSE;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS locked_at TIMESTAMP;
+
+-- Trigger function: Lock account after 5 failed login attempts
+CREATE OR REPLACE FUNCTION on_failed_login_attempt()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.failed_login_attempts >= 5 AND (OLD.failed_login_attempts < 5 OR OLD.failed_login_attempts IS NULL) THEN
+        NEW.is_locked := TRUE;
+        NEW.locked_at := CURRENT_TIMESTAMP;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER trg_lock_on_failed_login
+    BEFORE UPDATE OF failed_login_attempts ON users
+    FOR EACH ROW
+    EXECUTE FUNCTION on_failed_login_attempt();
+
+-- Record a failed login attempt for an email
+CREATE OR REPLACE FUNCTION record_failed_login(p_email VARCHAR)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE users
+    SET failed_login_attempts = failed_login_attempts + 1
+    WHERE email = p_email
+      AND is_admin = FALSE;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Reset failed login counter on successful login
+CREATE OR REPLACE FUNCTION reset_failed_login(p_user_id INTEGER)
+RETURNS VOID AS $$
+BEGIN
+    UPDATE users
+    SET failed_login_attempts = 0
+    WHERE id = p_user_id
+      AND failed_login_attempts > 0;
+END;
+$$ LANGUAGE plpgsql;
+
+-- ============================================================
+-- Delete questionnaires when user is deleted
+-- ============================================================
+
+-- Trigger function: Delete user's questionnaires before user deletion
+CREATE OR REPLACE FUNCTION on_user_deleted()
+RETURNS TRIGGER AS $$
+BEGIN
+    DELETE FROM questionnaires WHERE user_id = OLD.id;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER trg_user_deleted
+    BEFORE DELETE ON users
+    FOR EACH ROW
+    EXECUTE FUNCTION on_user_deleted();
