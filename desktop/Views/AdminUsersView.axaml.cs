@@ -1,9 +1,12 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using FluentAvalonia.UI.Controls;
 using StadiumCompany.DAL;
 using StadiumCompany.Models;
 using StadiumCompany.Services;
+using StadiumCompany.Services.PdfGenerator;
 
 namespace StadiumCompany.Views;
 
@@ -43,6 +46,7 @@ public partial class AdminUsersView : UserControl
         TxtTitle.Text = loc.T("admin.users_title");
         TxtBtnArchive.Text = loc.T("admin.archive_inactive");
         TxtEmptyState.Text = loc.T("admin.no_users");
+        TxtExportPdf.Text = loc.T("admin.export_pdf_users");
     }
 
     #endregion
@@ -124,6 +128,38 @@ public partial class AdminUsersView : UserControl
     private void BtnBack_Click(object? sender, RoutedEventArgs e)
     {
         _mainWindow.ShowMainView(_currentUser);
+    }
+
+    private async void BtnExportPdf_Click(object? sender, RoutedEventArgs e)
+    {
+        var loc = LocalizationManager.Instance;
+        var topLevel = TopLevel.GetTopLevel(this);
+        if (topLevel == null) return;
+
+        var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+        {
+            Title = loc.T("admin.export_pdf_users"),
+            SuggestedFileName = $"{loc.T("pdf.users_filename")}_{DateTime.Now:yyyyMMdd}.pdf",
+            FileTypeChoices = [new FilePickerFileType("PDF") { Patterns = ["*.pdf"] }],
+        });
+
+        if (file == null) return;
+
+        try
+        {
+            var users = _userRepository.GetAllNonAdmin();
+            UserListPdfGenerator.Generate(users, file.Path.LocalPath);
+        }
+        catch (Exception ex)
+        {
+            var dialog = new ContentDialog
+            {
+                Title = loc.T("common.error"),
+                Content = ex.Message,
+                CloseButtonText = loc.T("common.ok"),
+            };
+            await dialog.ShowAsync();
+        }
     }
 
     private void BtnRefresh_Click(object? sender, RoutedEventArgs e)

@@ -203,5 +203,17 @@
   "admin.connections_title": "Connection History",
   "admin.no_connections": "No connections found.",
 
-  "login.error_locked": "Account locked after too many failed attempts. Contact an administrator."
+  "login.error_locked": "Account locked after too many failed attempts. Contact an administrator.",
+
+  "pdf.users_header": "USER LIST",
+  "pdf.users_date": "Date: {0}",
+  "pdf.users_filename": "user_list",
+  "pdf.users_col_id": "ID",
+  "pdf.users_col_email": "Email",
+  "pdf.users_col_name": "Name",
+  "pdf.users_col_status": "Status",
+  "pdf.users_col_created": "Created",
+  "pdf.users_status_active": "Active",
+  "pdf.users_status_archived": "Archived",
+  "admin.export_pdf_users": "Export PDF"
 }

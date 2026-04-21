@@ -71,6 +71,15 @@
                         Click="BtnRefresh_Click">
                     <ui:SymbolIcon Symbol="Refresh" FontSize="16" Foreground="{DynamicResource TextSecondaryBrush}"/>
                 </Button>
+                <Button x:Name="BtnExportPdf"
+                        Padding="12,8"
+                        CornerRadius="8"
+                        Click="BtnExportPdf_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <ui:SymbolIcon Symbol="Document" FontSize="16" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <TextBlock x:Name="TxtExportPdf" Text="Export PDF" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Border>
 

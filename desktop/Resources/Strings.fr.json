@@ -203,5 +203,17 @@
   "admin.connections_title": "Historique des connexions",
   "admin.no_connections": "Aucune connexion trouvée.",
 
-  "login.error_locked": "Compte verrouillé après trop de tentatives. Contactez un administrateur."
+  "login.error_locked": "Compte verrouillé après trop de tentatives. Contactez un administrateur.",
+
+  "pdf.users_header": "LISTE DES UTILISATEURS",
+  "pdf.users_date": "Date : {0}",
+  "pdf.users_filename": "liste_utilisateurs",
+  "pdf.users_col_id": "ID",
+  "pdf.users_col_email": "Email",
+  "pdf.users_col_name": "Nom",
+  "pdf.users_col_status": "Statut",
+  "pdf.users_col_created": "Créé le",
+  "pdf.users_status_active": "Actif",
+  "pdf.users_status_archived": "Archivé",
+  "admin.export_pdf_users": "Exporter PDF"
 }
