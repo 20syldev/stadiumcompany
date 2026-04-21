@@ -39,4 +39,9 @@ class Questionnaire extends Model
     {
         return $this->hasMany(Question::class)->orderBy('number');
     }
+
+    public function submissions()
+    {
+        return $this->hasMany(QuizSubmission::class);
+    }
 }
