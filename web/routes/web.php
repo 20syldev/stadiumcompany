@@ -46,6 +46,9 @@ Route::middleware(['auth'])->group(function () {
     // Admin
     Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('logs', [AdminLogController::class, 'index'])->name('logs.index');
+        Route::get('rankings', [AdminRankingController::class, 'index'])->name('rankings.index');
+        Route::get('rankings/api/questionnaires', [AdminRankingController::class, 'apiQuestionnaires'])->name('rankings.api.questionnaires');
+        Route::get('rankings/api/{questionnaire}/leaderboard', [AdminRankingController::class, 'apiLeaderboard'])->name('rankings.api.leaderboard');
     });
 });
 

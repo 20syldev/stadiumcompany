@@ -8,6 +8,7 @@ use App\Models\QuizSubmission;
 use App\Services\ActivityLogService;
 use App\Services\QuizScoringService;
 use App\Services\QuizService;
+use App\Services\RankingService;
 use Illuminate\Http\Request;
 
 class QuizController extends Controller
@@ -15,6 +16,7 @@ class QuizController extends Controller
     public function __construct(
         private QuizScoringService $scoringService,
         private QuizService $quizService,
+        private RankingService $rankingService,
     ) {}
 
     public function play(Request $request, Questionnaire $questionnaire)
@@ -57,7 +59,9 @@ class QuizController extends Controller
             "{$questionnaire->name} — {$result['score']}/{$result['maxScore']}"
         );
 
-        return response()->json([...$result, 'submissionId' => $submission->id]);
+        $ranking = $this->rankingService->getRankForSubmission($submission);
+
+        return response()->json([...$result, 'submissionId' => $submission->id, ...$ranking]);
     }
 
     public function review(QuizSubmission $submission)
@@ -90,6 +94,8 @@ class QuizController extends Controller
             ];
         });
 
-        return view('quiz.review', compact('submission', 'questionnaire', 'questionsData'));
+        $ranking = $this->rankingService->getRankForSubmission($submission);
+
+        return view('quiz.review', compact('submission', 'questionnaire', 'questionsData', 'ranking'));
     }
 }
