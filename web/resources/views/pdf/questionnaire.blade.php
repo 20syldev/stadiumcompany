@@ -50,8 +50,8 @@
                 <thead>
                     <tr>
                         <th>{{ __('messages.question.col_answer') }}</th>
-                        <th style="width: 60px;">{{ __('messages.question.col_correct') }}</th>
-                        <th style="width: 60px;">{{ __('messages.question.col_weight') }}</th>
+                        <th style="width: 60px; text-align: center;">{{ __('messages.question.col_correct') }}</th>
+                        <th style="width: 60px; text-align: center;">{{ __('messages.question.col_weight') }}</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -5,6 +5,8 @@ namespace App\Http\Requests\Auth;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -41,7 +43,9 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $results = DB::select('SELECT * FROM get_user_for_login(?)', [$this->input('email')]);
+
+        if (empty($results) || ! Hash::check($this->input('password'), $results[0]->password)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -49,13 +53,15 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        if (Auth::user()->is_archived) {
-            Auth::logout();
+        $user = $results[0];
 
+        if ($user->is_archived) {
             throw ValidationException::withMessages([
                 'email' => __('messages.login.error_archived'),
             ]);
         }
+
+        Auth::loginUsingId($user->id, $this->boolean('remember'));
 
         RateLimiter::clear($this->throttleKey());
     }

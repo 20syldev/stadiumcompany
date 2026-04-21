@@ -16,6 +16,8 @@ class ApplyUserPreferences
         view()->share('currentTheme', session('theme', 'Light'));
         view()->share('currentLocale', $locale);
 
-        return $next($request);
+        $response = $next($request);
+        $response->headers->set('Cache-Control', 'no-store');
+        return $response;
     }
 }

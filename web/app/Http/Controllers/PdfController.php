@@ -15,7 +15,8 @@ class PdfController extends Controller
 
         $pdf = Pdf::loadView('pdf.questionnaire', compact('questionnaire'));
         $prefix = __('messages.pdf.filename_prefix');
-        $filename = "{$prefix}_{$questionnaire->name}_" . now()->format('Ymd') . '.pdf';
+        $slug = \Str::slug($questionnaire->name);
+        $filename = "{$prefix}_{$slug}_" . now()->format('Ymd') . '.pdf';
 
         return $pdf->download($filename);
     }
