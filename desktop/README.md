@@ -4,14 +4,14 @@ Application desktop cross-platform de gestion de questionnaires, construite avec
 
 ## Stack technique
 
-| Composant | Version |
-|-----------|---------|
-| .NET | 8.0 |
-| Avalonia UI | 11.2.5 |
-| FluentAvalonia | 2.4.1 |
-| Npgsql | 8.0.5 |
-| BCrypt.Net | 4.0.3 |
-| QuestPDF | 2025.12.3 |
+| Composant      | Version   |
+| -------------- | --------- |
+| .NET           | 8.0       |
+| Avalonia UI    | 11.2.5    |
+| FluentAvalonia | 2.4.1     |
+| Npgsql         | 8.0.5     |
+| BCrypt.Net     | 4.0.3     |
+| QuestPDF       | 2025.12.3 |
 
 ## Architecture
 
