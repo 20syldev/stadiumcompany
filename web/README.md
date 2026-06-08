@@ -4,15 +4,15 @@ Application web de gestion de questionnaires, construite avec Laravel et Tailwin
 
 ## Stack technique
 
-| Composant | Version |
-|-----------|---------|
-| PHP | ^8.2 |
-| Laravel | ^12.0 |
-| Tailwind CSS | ^4.1.18 |
-| Alpine.js | ^3.4.2 |
-| Vite | ^7.0.7 |
-| DomPDF | ^3.1 |
-| Laravel Breeze | ^2.3 |
+| Composant      | Version |
+| -------------- | ------- |
+| PHP            | 8.2+    |
+| Laravel        | 12      |
+| Tailwind CSS   | 4       |
+| Alpine.js      | 3.4     |
+| Vite           | 7       |
+| DomPDF         | 3.1     |
+| Laravel Breeze | 2.3     |
 
 ## Architecture
 
