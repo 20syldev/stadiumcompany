@@ -5,11 +5,6 @@ namespace StadiumCompany.Services.PdfGenerator;
 
 public static class QuestionnairePdfGenerator
 {
-    static QuestionnairePdfGenerator()
-    {
-        QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
-    }
-
     public static void Generate(Questionnaire questionnaire, string filePath)
     {
         var document = new QuestionnairePdfDocument(questionnaire);
