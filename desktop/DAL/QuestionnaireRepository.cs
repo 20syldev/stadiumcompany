@@ -6,8 +6,6 @@ namespace StadiumCompany.DAL;
 
 public class QuestionnaireRepository
 {
-    private readonly ThemeRepository _themeRepository = new();
-
     public List<Questionnaire> GetByUser(int userId)
     {
         var questionnaires = new List<Questionnaire>();
@@ -16,9 +14,11 @@ public class QuestionnaireRepository
         connection.Open();
 
         var query = @"SELECT q.*, t.name as theme_label,
+                      dl.label as difficulty_label,
                       (SELECT COUNT(*) FROM questions WHERE questionnaire_id = q.id) as question_count
                       FROM questionnaires q
                       JOIN themes t ON q.theme_id = t.id
+                      LEFT JOIN difficulty_levels dl ON q.difficulty_level_id = dl.id
                       WHERE q.user_id = @userId
                       ORDER BY q.id DESC";
 
@@ -34,6 +34,7 @@ public class QuestionnaireRepository
                 Id = questionnaire.ThemeId,
                 Label = reader.GetString(reader.GetOrdinal("theme_label"))
             };
+            questionnaire.DifficultyLevel = MapDifficultyLevel(reader, questionnaire.DifficultyLevelId);
             questionnaires.Add(questionnaire);
         }
 
@@ -48,10 +49,12 @@ public class QuestionnaireRepository
         connection.Open();
 
         var query = @"SELECT q.*, t.name as theme_label,
+                      dl.label as difficulty_label,
                       u.first_name, u.last_name, u.email,
                       (SELECT COUNT(*) FROM questions WHERE questionnaire_id = q.id) as question_count
                       FROM questionnaires q
                       JOIN themes t ON q.theme_id = t.id
+                      LEFT JOIN difficulty_levels dl ON q.difficulty_level_id = dl.id
                       JOIN users u ON q.user_id = u.id
                       WHERE q.published = TRUE AND q.user_id != @userId
                       ORDER BY q.id DESC";
@@ -68,6 +71,7 @@ public class QuestionnaireRepository
                 Id = questionnaire.ThemeId,
                 Label = reader.GetString(reader.GetOrdinal("theme_label"))
             };
+            questionnaire.DifficultyLevel = MapDifficultyLevel(reader, questionnaire.DifficultyLevelId);
             questionnaire.Owner = new User
             {
                 Id = questionnaire.UserId,
@@ -89,9 +93,11 @@ public class QuestionnaireRepository
         connection.Open();
 
         var query = @"SELECT q.*, t.name as theme_label,
+                      dl.label as difficulty_label,
                       (SELECT COUNT(*) FROM questions WHERE questionnaire_id = q.id) as question_count
                       FROM questionnaires q
-                      JOIN themes t ON q.theme_id = t.id";
+                      JOIN themes t ON q.theme_id = t.id
+                      LEFT JOIN difficulty_levels dl ON q.difficulty_level_id = dl.id";
 
         using var command = new NpgsqlCommand(query, connection);
 
@@ -104,6 +110,7 @@ public class QuestionnaireRepository
                 Id = questionnaire.ThemeId,
                 Label = reader.GetString(reader.GetOrdinal("theme_label"))
             };
+            questionnaire.DifficultyLevel = MapDifficultyLevel(reader, questionnaire.DifficultyLevelId);
             questionnaires.Add(questionnaire);
         }
 
@@ -116,9 +123,11 @@ public class QuestionnaireRepository
         connection.Open();
 
         var query = @"SELECT q.*, t.name as theme_label,
+                      dl.label as difficulty_label,
                       (SELECT COUNT(*) FROM questions WHERE questionnaire_id = q.id) as question_count
                       FROM questionnaires q
                       JOIN themes t ON q.theme_id = t.id
+                      LEFT JOIN difficulty_levels dl ON q.difficulty_level_id = dl.id
                       WHERE q.id = @id";
 
         using var command = new NpgsqlCommand(query, connection);
@@ -133,6 +142,7 @@ public class QuestionnaireRepository
                 Id = questionnaire.ThemeId,
                 Label = reader.GetString(reader.GetOrdinal("theme_label"))
             };
+            questionnaire.DifficultyLevel = MapDifficultyLevel(reader, questionnaire.DifficultyLevelId);
             return questionnaire;
         }
         return null;
@@ -143,8 +153,8 @@ public class QuestionnaireRepository
         using var connection = Database.GetConnection();
         connection.Open();
 
-        var query = @"INSERT INTO questionnaires (name, theme_id, user_id, published)
-                      VALUES (@name, @themeId, @userId, @published)
+        var query = @"INSERT INTO questionnaires (name, theme_id, user_id, published, difficulty_level_id)
+                      VALUES (@name, @themeId, @userId, @published, @difficultyLevelId)
                       RETURNING id";
 
         using var command = new NpgsqlCommand(query, connection);
@@ -152,6 +162,8 @@ public class QuestionnaireRepository
         command.Parameters.AddWithValue("@themeId", questionnaire.ThemeId);
         command.Parameters.AddWithValue("@userId", questionnaire.UserId);
         command.Parameters.AddWithValue("@published", questionnaire.Published);
+        command.Parameters.AddWithValue("@difficultyLevelId",
+            questionnaire.DifficultyLevelId.HasValue ? questionnaire.DifficultyLevelId.Value : DBNull.Value);
 
         return Convert.ToInt32(command.ExecuteScalar());
     }
@@ -162,7 +174,8 @@ public class QuestionnaireRepository
         connection.Open();
 
         var query = @"UPDATE questionnaires
-                      SET name = @name, theme_id = @themeId, published = @published
+                      SET name = @name, theme_id = @themeId, published = @published,
+                          difficulty_level_id = @difficultyLevelId
                       WHERE id = @id AND user_id = @userId";
 
         using var command = new NpgsqlCommand(query, connection);
@@ -170,6 +183,8 @@ public class QuestionnaireRepository
         command.Parameters.AddWithValue("@name", questionnaire.Name);
         command.Parameters.AddWithValue("@themeId", questionnaire.ThemeId);
         command.Parameters.AddWithValue("@published", questionnaire.Published);
+        command.Parameters.AddWithValue("@difficultyLevelId",
+            questionnaire.DifficultyLevelId.HasValue ? questionnaire.DifficultyLevelId.Value : DBNull.Value);
         command.Parameters.AddWithValue("@userId", requestingUserId);
 
         return command.ExecuteNonQuery() > 0;
@@ -241,28 +256,32 @@ public class QuestionnaireRepository
         try
         {
             // 1. Récupérer le questionnaire source
-            var sourceQuery = @"SELECT name, theme_id FROM questionnaires WHERE id = @id";
+            var sourceQuery = @"SELECT name, theme_id, difficulty_level_id FROM questionnaires WHERE id = @id";
             using var sourceCmd = new NpgsqlCommand(sourceQuery, connection, transaction);
             sourceCmd.Parameters.AddWithValue("@id", sourceId);
 
             string sourceName;
             int themeId;
+            int? difficultyLevelId;
             using (var reader = sourceCmd.ExecuteReader())
             {
                 if (!reader.Read())
                     throw new Exception(LocalizationManager.Instance.T("error.source_not_found"));
                 sourceName = reader.GetString(0);
                 themeId = reader.GetInt32(1);
+                difficultyLevelId = reader.IsDBNull(2) ? null : reader.GetInt32(2);
             }
 
-            // 2. Créer la copie du questionnaire
-            var insertQuery = @"INSERT INTO questionnaires (name, theme_id, user_id, published)
-                               VALUES (@name, @themeId, @userId, FALSE)
+            // 2. Créer la copie du questionnaire (difficulté incluse)
+            var insertQuery = @"INSERT INTO questionnaires (name, theme_id, user_id, published, difficulty_level_id)
+                               VALUES (@name, @themeId, @userId, FALSE, @difficultyLevelId)
                                RETURNING id";
             using var insertCmd = new NpgsqlCommand(insertQuery, connection, transaction);
             insertCmd.Parameters.AddWithValue("@name", $"{sourceName} {LocalizationManager.Instance.T("main.fork_suffix")}");
             insertCmd.Parameters.AddWithValue("@themeId", themeId);
             insertCmd.Parameters.AddWithValue("@userId", newOwnerId);
+            insertCmd.Parameters.AddWithValue("@difficultyLevelId",
+                difficultyLevelId.HasValue ? difficultyLevelId.Value : DBNull.Value);
             var newQuestionnaireId = Convert.ToInt32(insertCmd.ExecuteScalar());
 
             // 3. Copier les questions
@@ -340,8 +359,39 @@ public class QuestionnaireRepository
         }
     }
 
+    // Returns questionnaire count per theme (LEFT JOIN so themes with 0 questionnaires are included)
+    public List<ThemeStat> GetCountByTheme()
+    {
+        var stats = new List<ThemeStat>();
+
+        using var connection = Database.GetConnection();
+        connection.Open();
+
+        var query = @"SELECT t.id, t.name AS theme_name, COUNT(q.id) AS questionnaire_count
+                      FROM themes t
+                      LEFT JOIN questionnaires q ON q.theme_id = t.id
+                      GROUP BY t.id, t.name
+                      ORDER BY t.name";
+
+        using var command = new NpgsqlCommand(query, connection);
+        using var reader = command.ExecuteReader();
+
+        while (reader.Read())
+        {
+            stats.Add(new ThemeStat
+            {
+                ThemeId            = reader.GetInt32(reader.GetOrdinal("id")),
+                ThemeName          = reader.GetString(reader.GetOrdinal("theme_name")),
+                QuestionnaireCount = Convert.ToInt32(reader.GetInt64(reader.GetOrdinal("questionnaire_count")))
+            });
+        }
+
+        return stats;
+    }
+
     private static Questionnaire MapQuestionnaire(NpgsqlDataReader reader)
     {
+        var dlOrdinal = reader.GetOrdinal("difficulty_level_id");
         return new Questionnaire
         {
             Id = reader.GetInt32(reader.GetOrdinal("id")),
@@ -349,7 +399,21 @@ public class QuestionnaireRepository
             ThemeId = reader.GetInt32(reader.GetOrdinal("theme_id")),
             UserId = reader.GetInt32(reader.GetOrdinal("user_id")),
             Published = reader.GetBoolean(reader.GetOrdinal("published")),
-            QuestionCount = reader.GetInt32(reader.GetOrdinal("question_count"))
+            QuestionCount = reader.GetInt32(reader.GetOrdinal("question_count")),
+            DifficultyLevelId = reader.IsDBNull(dlOrdinal) ? null : reader.GetInt32(dlOrdinal)
+        };
+    }
+
+    // Maps the difficulty_level columns from a joined query row (returns null if no level assigned)
+    private static DifficultyLevel? MapDifficultyLevel(NpgsqlDataReader reader, int? difficultyLevelId)
+    {
+        if (!difficultyLevelId.HasValue) return null;
+        var labelOrdinal = reader.GetOrdinal("difficulty_label");
+        if (reader.IsDBNull(labelOrdinal)) return null;
+        return new DifficultyLevel
+        {
+            Id    = difficultyLevelId.Value,
+            Label = reader.GetString(labelOrdinal)
         };
     }
 }

@@ -7,9 +7,11 @@ public class Questionnaire
     public int ThemeId { get; set; }
     public int UserId { get; set; }
     public bool Published { get; set; }
+    public int? DifficultyLevelId { get; set; }
 
     // Navigation properties
     public Theme? Theme { get; set; }
+    public DifficultyLevel? DifficultyLevel { get; set; }
     public User? Owner { get; set; }
     public List<Question> Questions { get; set; } = [];
 
