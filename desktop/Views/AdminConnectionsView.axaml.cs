@@ -97,7 +97,7 @@ public partial class AdminConnectionsView : UserControl
         try
         {
             var from = DpFrom.SelectedDate?.Date;
-            var to = DpTo.SelectedDate?.Date?.AddDays(1).AddSeconds(-1);
+            var to = DpTo.SelectedDate?.Date.AddDays(1).AddSeconds(-1);
             int offset = _currentPage * PageSize;
 
             _totalCount = _activityLogRepository.GetLoginCount(from, to);
