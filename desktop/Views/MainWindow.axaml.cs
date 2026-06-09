@@ -80,6 +80,32 @@ public partial class MainWindow : Window
         ContentArea.Content = new AdminConnectionsView(this, user);
     }
 
+    public void ShowStatisticsView(User user)
+    {
+        Title = "Stadium Company - Statistics";
+        MinWidth = 800;
+        MinHeight = 550;
+        CanResize = true;
+        WindowState = WindowState.Maximized;
+
+        _backgroundPanel.Bind(Panel.BackgroundProperty, this.GetResourceObservable("AppBackgroundAltBrush"));
+
+        ContentArea.Content = new StatisticsView(this, user);
+    }
+
+    public void ShowAdminDifficultyLevelsView(User user)
+    {
+        Title = "Stadium Company - Difficulty Levels";
+        MinWidth = 800;
+        MinHeight = 550;
+        CanResize = true;
+        WindowState = WindowState.Maximized;
+
+        _backgroundPanel.Bind(Panel.BackgroundProperty, this.GetResourceObservable("AppBackgroundAltBrush"));
+
+        ContentArea.Content = new AdminDifficultyLevelsView(this, user);
+    }
+
     public void Logout()
     {
         ShowLoginView();

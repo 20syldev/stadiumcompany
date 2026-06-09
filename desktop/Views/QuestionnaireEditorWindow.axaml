@@ -51,23 +51,32 @@
                                      CornerRadius="8"/>
                         </StackPanel>
 
-                        <Grid ColumnDefinitions="*,Auto">
-                            <StackPanel Grid.Column="0" Spacing="6" Margin="0,0,20,0">
+                        <Grid ColumnDefinitions="*,*,Auto">
+                            <StackPanel Grid.Column="0" Spacing="6" Margin="0,0,16,0">
                                 <TextBlock x:Name="LblTheme" Text="Theme"
                                            FontSize="13"
                                            Foreground="{DynamicResource TextSecondaryBrush}"/>
                                 <ComboBox x:Name="CmbTheme"
                                           Height="40"
                                           CornerRadius="8"
-                                          HorizontalAlignment="Stretch"
-                                          MaxWidth="300"/>
+                                          HorizontalAlignment="Stretch"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Spacing="6" Margin="0,0,16,0">
+                                <TextBlock x:Name="LblDifficulty" Text="Niveau de difficulte"
+                                           FontSize="13"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <ComboBox x:Name="CmbDifficulty"
+                                          Height="40"
+                                          CornerRadius="8"
+                                          HorizontalAlignment="Stretch"/>
                             </StackPanel>
 
                             <CheckBox x:Name="ChkPublished"
-                                      Grid.Column="1"
+                                      Grid.Column="2"
                                       Content="Publie"
                                       VerticalAlignment="Bottom"
-                                      Margin="10,0,0,8"/>
+                                      Margin="0,0,0,8"/>
                         </Grid>
                     </StackPanel>
                 </Border>

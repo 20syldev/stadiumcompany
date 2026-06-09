@@ -18,15 +18,18 @@ public partial class MainView : UserControl
     private readonly MainWindow _mainWindow = null!;
     private readonly User _currentUser = null!;
     private readonly QuestionnaireRepository _questionnaireRepository = new();
+    private readonly DifficultyLevelRepository _difficultyLevelRepository = new();
     private readonly UserPreferencesRepository _preferencesRepository = new();
     private readonly UserRepository _userRepository = new();
     private bool _isDarkTheme = false;
     private bool _showingMine = true;
     private int _loginCount = 0;
     private DateTime? _lastLoginAt = null;
+    private int? _selectedDifficultyId = null;
 
     private List<Questionnaire> _myQuestionnaires = [];
     private List<Questionnaire> _publishedQuestionnaires = [];
+    private List<DifficultyLevel> _difficultyLevels = [];
 
     private static IBrush Res(string key)
     {
@@ -57,6 +60,9 @@ public partial class MainView : UserControl
         BtnAdmin.IsVisible = user.IsAdmin;
         BtnAdminUsers.IsVisible = user.IsAdmin;
         BtnAdminConnections.IsVisible = user.IsAdmin;
+        BtnAdminDifficulty.IsVisible = user.IsAdmin;
+        BtnStatistics.IsVisible = user.IsAdmin;
+        AdminSeparator.IsVisible = user.IsAdmin;
 
         // Load login stats (Besoin 1 & 2)
         LoadLoginStats();
@@ -69,6 +75,7 @@ public partial class MainView : UserControl
         UpdateTexts();
 
         LoadQuestionnaires();
+        LoadDifficultyFilter();
         UpdateTabStyles();
         BuildCards();
     }
@@ -122,7 +129,11 @@ public partial class MainView : UserControl
 
         if (_showingMine)
         {
-            if (_myQuestionnaires.Count == 0)
+            var filtered = _selectedDifficultyId.HasValue
+                ? _myQuestionnaires.Where(q => q.DifficultyLevelId == _selectedDifficultyId.Value).ToList()
+                : _myQuestionnaires;
+
+            if (filtered.Count == 0)
             {
                 EmptyState.IsVisible = true;
                 TxtEmptyState.Text = loc.T("main.empty_mine");
@@ -130,14 +141,18 @@ public partial class MainView : UserControl
             }
             EmptyState.IsVisible = false;
 
-            foreach (var q in _myQuestionnaires)
+            foreach (var q in filtered)
             {
                 CardsContainer.Children.Add(BuildMyQuestionnaireCard(q));
             }
         }
         else
         {
-            if (_publishedQuestionnaires.Count == 0)
+            var filtered = _selectedDifficultyId.HasValue
+                ? _publishedQuestionnaires.Where(q => q.DifficultyLevelId == _selectedDifficultyId.Value).ToList()
+                : _publishedQuestionnaires;
+
+            if (filtered.Count == 0)
             {
                 EmptyState.IsVisible = true;
                 TxtEmptyState.Text = loc.T("main.empty_published");
@@ -145,7 +160,7 @@ public partial class MainView : UserControl
             }
             EmptyState.IsVisible = false;
 
-            foreach (var q in _publishedQuestionnaires)
+            foreach (var q in filtered)
             {
                 CardsContainer.Children.Add(BuildPublishedQuestionnaireCard(q));
             }
@@ -181,7 +196,9 @@ public partial class MainView : UserControl
             MaxLines = 2
         });
 
-        // Theme badge
+        // Badges row (theme + difficulty on same line)
+        var badgesRow = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 8 };
+
         var themeName = q.Theme?.Label != null ? loc.TranslateTheme(q.Theme.Label) : "";
         if (!string.IsNullOrEmpty(themeName))
         {
@@ -189,17 +206,27 @@ public partial class MainView : UserControl
             {
                 Background = Res("BadgeBackgroundBrush"),
                 CornerRadius = new CornerRadius(6),
-                Padding = new Thickness(10, 4),
-                HorizontalAlignment = HorizontalAlignment.Left
+                Padding = new Thickness(10, 4)
             };
-            badge.Child = new TextBlock
-            {
-                Text = themeName,
-                FontSize = 12,
-                Foreground = Res("BadgeTextBrush")
-            };
-            content.Children.Add(badge);
+            badge.Child = new TextBlock { Text = themeName, FontSize = 12, Foreground = Res("BadgeTextBrush") };
+            badgesRow.Children.Add(badge);
         }
+
+        if (q.DifficultyLevel != null)
+        {
+            var diffBadge = new Border
+            {
+                Background = Res("AccentBrush"),
+                CornerRadius = new CornerRadius(6),
+                Padding = new Thickness(10, 4),
+                Opacity = 0.75
+            };
+            diffBadge.Child = new TextBlock { Text = q.DifficultyLevel.Label, FontSize = 12, Foreground = Brushes.White };
+            badgesRow.Children.Add(diffBadge);
+        }
+
+        if (badgesRow.Children.Count > 0)
+            content.Children.Add(badgesRow);
 
         // Stats row: question count + published status
         var statsRow = new StackPanel
@@ -310,7 +337,9 @@ public partial class MainView : UserControl
             MaxLines = 2
         });
 
-        // Theme badge
+        // Badges row (theme + difficulty on same line)
+        var badgesRow2 = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 8 };
+
         var themeName = q.Theme?.Label != null ? loc.TranslateTheme(q.Theme.Label) : "";
         if (!string.IsNullOrEmpty(themeName))
         {
@@ -318,17 +347,27 @@ public partial class MainView : UserControl
             {
                 Background = Res("BadgeBackgroundBrush"),
                 CornerRadius = new CornerRadius(6),
-                Padding = new Thickness(10, 4),
-                HorizontalAlignment = HorizontalAlignment.Left
+                Padding = new Thickness(10, 4)
             };
-            badge.Child = new TextBlock
-            {
-                Text = themeName,
-                FontSize = 12,
-                Foreground = Res("BadgeTextBrush")
-            };
-            content.Children.Add(badge);
+            badge.Child = new TextBlock { Text = themeName, FontSize = 12, Foreground = Res("BadgeTextBrush") };
+            badgesRow2.Children.Add(badge);
         }
+
+        if (q.DifficultyLevel != null)
+        {
+            var diffBadge = new Border
+            {
+                Background = Res("AccentBrush"),
+                CornerRadius = new CornerRadius(6),
+                Padding = new Thickness(10, 4),
+                Opacity = 0.75
+            };
+            diffBadge.Child = new TextBlock { Text = q.DifficultyLevel.Label, FontSize = 12, Foreground = Brushes.White };
+            badgesRow2.Children.Add(diffBadge);
+        }
+
+        if (badgesRow2.Children.Count > 0)
+            content.Children.Add(badgesRow2);
 
         // Stats row: question count + author
         var statsRow = new StackPanel
@@ -440,12 +479,15 @@ public partial class MainView : UserControl
         TxtAdmin.Text = loc.T("admin.btn_admin");
         TxtAdminUsers.Text = loc.T("admin.btn_users");
         TxtAdminConnections.Text = loc.T("admin.btn_connections");
+        TxtAdminDifficulty.Text = loc.T("admin.btn_difficulty");
+        TxtStatistics.Text = loc.T("admin.btn_statistics");
 
         // Update login stats labels
         UpdateLoginStatsText();
 
         // Reload data to update translated fields
         LoadQuestionnaires();
+        LoadDifficultyFilter();
         BuildCards();
     }
 
@@ -457,6 +499,33 @@ public partial class MainView : UserControl
     {
         _myQuestionnaires = _questionnaireRepository.GetByUser(_currentUser.Id);
         _publishedQuestionnaires = _questionnaireRepository.GetPublishedByOthers(_currentUser.Id);
+    }
+
+    private void LoadDifficultyFilter()
+    {
+        var loc = LocalizationManager.Instance;
+        _difficultyLevels = _difficultyLevelRepository.GetAll();
+
+        CbDifficulty.SelectionChanged -= CbDifficulty_SelectionChanged;
+        CbDifficulty.Items.Clear();
+
+        CbDifficulty.Items.Add(new ComboBoxItem { Content = loc.T("main.filter_all_difficulties"), Tag = null });
+        foreach (var dl in _difficultyLevels)
+        {
+            CbDifficulty.Items.Add(new ComboBoxItem { Content = dl.Label, Tag = dl.Id });
+        }
+
+        CbDifficulty.SelectedIndex = 0;
+        CbDifficulty.SelectionChanged += CbDifficulty_SelectionChanged;
+    }
+
+    private void CbDifficulty_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (CbDifficulty.SelectedItem is ComboBoxItem item)
+        {
+            _selectedDifficultyId = item.Tag as int?;
+        }
+        BuildCards();
     }
 
     private void LoadLoginStats()
@@ -574,6 +643,18 @@ public partial class MainView : UserControl
     {
         UserMenuPopup.IsOpen = false;
         _mainWindow.ShowAdminConnectionsView(_currentUser);
+    }
+
+    private void BtnAdminDifficulty_Click(object? sender, RoutedEventArgs e)
+    {
+        UserMenuPopup.IsOpen = false;
+        _mainWindow.ShowAdminDifficultyLevelsView(_currentUser);
+    }
+
+    private void BtnStatistics_Click(object? sender, RoutedEventArgs e)
+    {
+        UserMenuPopup.IsOpen = false;
+        _mainWindow.ShowStatisticsView(_currentUser);
     }
 
     private void BtnLogout_Click(object? sender, RoutedEventArgs e)

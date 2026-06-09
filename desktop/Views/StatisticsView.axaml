@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             x:Class="StadiumCompany.Views.StatisticsView">
+
+    <Grid Margin="30,25,30,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="BtnBack"
+                    Grid.Column="0"
+                    Background="Transparent"
+                    Padding="10,8"
+                    CornerRadius="8"
+                    VerticalAlignment="Center"
+                    Click="BtnBack_Click">
+                <ui:SymbolIcon Symbol="Back" FontSize="18" Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </Button>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12" Margin="12,0,0,0">
+                <ui:SymbolIcon Symbol="Library"
+                               FontSize="28"
+                               Foreground="{DynamicResource AccentBrush}"/>
+                <TextBlock x:Name="TxtTitle"
+                           FontSize="24"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <Button x:Name="BtnRefresh"
+                    Grid.Column="2"
+                    Background="Transparent"
+                    Padding="10,8"
+                    CornerRadius="8"
+                    Click="BtnRefresh_Click">
+                <ui:SymbolIcon Symbol="Refresh" FontSize="18" Foreground="{DynamicResource TextSecondaryBrush}"/>
+            </Button>
+        </Grid>
+
+        <!-- Info bar -->
+        <Border Grid.Row="1"
+                Background="{DynamicResource CardBackgroundBrush}"
+                CornerRadius="10"
+                Padding="16,12"
+                BorderBrush="{DynamicResource BorderSubtleBrush}"
+                BorderThickness="1"
+                Margin="0,20,0,12">
+            <TextBlock x:Name="TxtTotal"
+                       FontSize="13"
+                       Foreground="{DynamicResource TextSecondaryBrush}"/>
+        </Border>
+
+        <!-- DataGrid -->
+        <Grid Grid.Row="2">
+            <DataGrid x:Name="StatsDataGrid"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserSortColumns="False"
+                      CanUserResizeColumns="True"
+                      GridLinesVisibility="Horizontal"
+                      BorderThickness="1"
+                      BorderBrush="{DynamicResource BorderSubtleBrush}"
+                      CornerRadius="10"/>
+
+            <StackPanel x:Name="EmptyState"
+                        IsVisible="False"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Spacing="12">
+                <ui:SymbolIcon Symbol="Library"
+                               FontSize="48"
+                               Foreground="{DynamicResource TextTertiaryBrush}"
+                               HorizontalAlignment="Center"
+                               Opacity="0.5"/>
+                <TextBlock x:Name="TxtEmptyState"
+                           FontSize="16"
+                           Foreground="{DynamicResource TextTertiaryBrush}"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</UserControl>

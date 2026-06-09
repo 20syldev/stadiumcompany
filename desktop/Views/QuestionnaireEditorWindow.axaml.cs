@@ -17,6 +17,7 @@ public partial class QuestionnaireEditorWindow : Window
     private readonly bool _readOnly;
     private readonly QuestionnaireRepository _questionnaireRepository = new();
     private readonly ThemeRepository _themeRepository = new();
+    private readonly DifficultyLevelRepository _difficultyLevelRepository = new();
     private readonly QuestionRepository _questionRepository = new();
     private readonly AnswerRepository _answerRepository = new();
 
@@ -58,6 +59,7 @@ public partial class QuestionnaireEditorWindow : Window
         }
 
         LoadThemes();
+        LoadDifficultyLevels();
 
         if (_questionnaireId.HasValue)
         {
@@ -73,6 +75,7 @@ public partial class QuestionnaireEditorWindow : Window
         LblName.Text = loc.T("editor.name");
         TxtName.Watermark = loc.T("editor.name_placeholder");
         LblTheme.Text = loc.T("editor.theme");
+        LblDifficulty.Text = loc.T("editor.difficulty");
         ChkPublished.Content = loc.T("editor.published");
         TxtBtnAddQuestion.Text = loc.T("editor.add_question");
         BtnCancel.Content = readOnly ? loc.T("editor.close") : loc.T("editor.cancel");
@@ -83,6 +86,7 @@ public partial class QuestionnaireEditorWindow : Window
     {
         TxtName.IsEnabled = false;
         CmbTheme.IsEnabled = false;
+        CmbDifficulty.IsEnabled = false;
         ChkPublished.IsEnabled = false;
         BtnAddQuestion.IsVisible = false;
         BtnSave.IsVisible = false;
@@ -162,6 +166,26 @@ public partial class QuestionnaireEditorWindow : Window
 
     #endregion
 
+    #region Difficulty level loading
+
+    // Sentinel item representing "no difficulty selected"
+    private static readonly DifficultyLevel _noDifficultySentinel = new() { Id = -1, Label = "Aucun" };
+
+    private void LoadDifficultyLevels()
+    {
+        var loc = LocalizationManager.Instance;
+        _noDifficultySentinel.Label = loc.T("editor.no_difficulty");
+
+        var levels = _difficultyLevelRepository.GetAll();
+        levels.Insert(0, _noDifficultySentinel);
+
+        CmbDifficulty.ItemsSource = levels;
+        CmbDifficulty.DisplayMemberBinding = new Avalonia.Data.Binding("Label");
+        CmbDifficulty.SelectedIndex = 0;
+    }
+
+    #endregion
+
     #region Load questionnaire
 
     private void LoadQuestionnaire()
@@ -186,10 +210,15 @@ public partial class QuestionnaireEditorWindow : Window
         if (themes != null)
         {
             var themeIndex = themes.FindIndex(t => t.Id == questionnaire.ThemeId);
-            if (themeIndex >= 0)
-            {
-                CmbTheme.SelectedIndex = themeIndex;
-            }
+            if (themeIndex >= 0) CmbTheme.SelectedIndex = themeIndex;
+        }
+
+        // Select the existing difficulty level (or keep "none" if not set)
+        if (questionnaire.DifficultyLevelId.HasValue &&
+            CmbDifficulty.ItemsSource is List<DifficultyLevel> levels)
+        {
+            var dlIndex = levels.FindIndex(d => d.Id == questionnaire.DifficultyLevelId.Value);
+            if (dlIndex >= 0) CmbDifficulty.SelectedIndex = dlIndex;
         }
 
         // Load questions and answers into editable model
@@ -465,7 +494,7 @@ public partial class QuestionnaireEditorWindow : Window
         var panel = eq.AnswersPanel!;
 
         // Header row
-        var headerRow = new Grid { ColumnDefinitions = new ColumnDefinitions("*,60,90,36") };
+        var headerRow = new Grid { ColumnDefinitions = new ColumnDefinitions("*,110,130,36") };
         headerRow.Children.Add(CreateHeaderLabel(loc.T("answer.label"), 0));
         headerRow.Children.Add(CreateHeaderLabel(loc.T("answer.is_correct"), 1));
         headerRow.Children.Add(CreateHeaderLabel(loc.T("answer.weight"), 2));
@@ -558,7 +587,7 @@ public partial class QuestionnaireEditorWindow : Window
     {
         var row = new Grid
         {
-            ColumnDefinitions = new ColumnDefinitions("*,60,90,36"),
+            ColumnDefinitions = new ColumnDefinitions("*,110,130,36"),
             Margin = new Thickness(0, 2)
         };
 
@@ -592,7 +621,7 @@ public partial class QuestionnaireEditorWindow : Window
         // Weight
         var numWeight = new NumericUpDown
         {
-            Width = 85,
+            Width = 120,
             Minimum = -100,
             Maximum = 100,
             Increment = 0.01m,
@@ -801,6 +830,11 @@ public partial class QuestionnaireEditorWindow : Window
             return;
         }
 
+        // Read difficulty level (null if sentinel "none" is selected)
+        var selectedDifficulty = CmbDifficulty.SelectedItem as DifficultyLevel;
+        int? difficultyLevelId = (selectedDifficulty == null || selectedDifficulty.Id == -1)
+            ? null : selectedDifficulty.Id;
+
         // Save/update questionnaire
         var questionnaire = new Questionnaire
         {
@@ -808,7 +842,8 @@ public partial class QuestionnaireEditorWindow : Window
             Name = TxtName.Text.Trim(),
             ThemeId = selectedTheme.Id,
             UserId = _userId,
-            Published = ChkPublished.IsChecked ?? false
+            Published = ChkPublished.IsChecked ?? false,
+            DifficultyLevelId = difficultyLevelId
         };
 
         if (_questionnaireId.HasValue)

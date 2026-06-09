@@ -105,6 +105,8 @@
                                     <TextBlock x:Name="TxtLanguageToggle" Text="English" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
                                 </StackPanel>
                             </Button>
+                            <!-- Admin section (hidden for non-admin) -->
+                            <Border x:Name="AdminSeparator" Background="{DynamicResource BorderSubtleBrush}" Height="1" Margin="6,4" IsVisible="False"/>
                             <Button x:Name="BtnAdmin"
                                     Background="Transparent"
                                     HorizontalAlignment="Stretch"
@@ -144,6 +146,33 @@
                                     <TextBlock x:Name="TxtAdminConnections" Text="Connection History" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
                                 </StackPanel>
                             </Button>
+                            <Button x:Name="BtnAdminDifficulty"
+                                    Background="Transparent"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Left"
+                                    Padding="12,10"
+                                    CornerRadius="6"
+                                    IsVisible="False"
+                                    Click="BtnAdminDifficulty_Click">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <ui:SymbolIcon Symbol="List" FontSize="16" Foreground="{DynamicResource TextTertiaryBrush}"/>
+                                    <TextBlock x:Name="TxtAdminDifficulty" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="BtnStatistics"
+                                    Background="Transparent"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Left"
+                                    Padding="12,10"
+                                    CornerRadius="6"
+                                    IsVisible="False"
+                                    Click="BtnStatistics_Click">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <ui:SymbolIcon Symbol="Library" FontSize="16" Foreground="{DynamicResource TextTertiaryBrush}"/>
+                                    <TextBlock x:Name="TxtStatistics" FontSize="13" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                            </Button>
+                            <!-- Logout separator -->
                             <Border Background="{DynamicResource BorderSubtleBrush}" Height="1" Margin="6,4"/>
                             <Button Background="Transparent"
                                     HorizontalAlignment="Stretch"
@@ -196,6 +225,17 @@
                     </Button>
                 </StackPanel>
             </Border>
+
+            <!-- Difficulty filter -->
+            <ComboBox x:Name="CbDifficulty"
+                      Grid.Column="1"
+                      HorizontalAlignment="Left"
+                      Margin="16,0,0,0"
+                      MinWidth="200"
+                      CornerRadius="8"
+                      FontSize="13"
+                      VerticalAlignment="Center"
+                      SelectionChanged="CbDifficulty_SelectionChanged"/>
 
             <!-- Add button -->
             <Button x:Name="BtnAdd"
