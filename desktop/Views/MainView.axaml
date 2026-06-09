@@ -8,6 +8,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
@@ -280,6 +281,16 @@
                 </StackPanel>
             </Grid>
         </ScrollViewer>
+        <!-- Footer -->
+        <TextBlock x:Name="TxtGdprFooter"
+                   Grid.Row="3"
+                   Text="Politique de confidentialité"
+                   FontSize="12"
+                   Foreground="{DynamicResource TextTertiaryBrush}"
+                   HorizontalAlignment="Center"
+                   Margin="0,8,0,0"
+                   Cursor="Hand"
+                   PointerPressed="BtnGdpr_Click"/>
     </Grid>
 
 </UserControl>

@@ -14,6 +14,11 @@
     <div class="w-full max-w-md px-6">
         {{ $slot }}
     </div>
+    <footer class="fixed bottom-8 left-0 right-0 text-center">
+        <a href="{{ route('privacy') }}" class="text-xs hover:underline" style="color: var(--color-text-tertiary);">
+            {{ __('messages.privacy.footer_link') }}
+        </a>
+    </footer>
     <div id="cookie-consent-app"></div>
 </body>
 </html>

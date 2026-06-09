@@ -5,7 +5,10 @@
     <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-start sm:items-center gap-4">
       <div class="flex-1">
         <p class="text-sm font-semibold mb-1" style="color: var(--color-text-primary);">{{ t('cookies.title') }}</p>
-        <p class="text-sm" style="color: var(--color-text-secondary);">{{ t('cookies.message') }}</p>
+        <p class="text-sm" style="color: var(--color-text-secondary);">
+          {{ t('cookies.message') }}
+          <a href="/privacy" class="underline font-medium hover:opacity-80" style="color: var(--color-accent);">{{ t('cookies.learn_more') }}</a>
+        </p>
       </div>
       <div class="flex gap-2 shrink-0">
         <button @click="decline()"

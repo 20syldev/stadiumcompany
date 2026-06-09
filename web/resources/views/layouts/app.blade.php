@@ -150,6 +150,13 @@
         <main class="flex-1 overflow-y-auto px-6 py-6">
             @yield('content')
         </main>
+
+        <!-- Footer -->
+        <footer class="shrink-0 px-6 py-3 text-center" style="border-top: 1px solid var(--color-border-subtle);">
+            <a href="{{ route('privacy') }}" class="text-xs hover:underline" style="color: var(--color-text-tertiary);">
+                {{ __('messages.privacy.footer_link') }}
+            </a>
+        </footer>
     </div>
 
     @stack('scripts')

@@ -252,6 +252,28 @@ return [
         'message' => 'This site uses cookies to ensure you get the best experience. By continuing, you agree to our use of cookies.',
         'accept' => 'Accept',
         'decline' => 'Decline',
+        'learn_more' => 'Learn more',
+    ],
+
+    'privacy' => [
+        'title' => 'Privacy Policy',
+        'back' => 'Back',
+        'subtitle' => 'PRIVACY POLICY — STADIUM COMPANY',
+        'section1_title' => '1. Data Controller',
+        'section1_body' => 'Stadium Company is the controller of your personal data.',
+        'section2_title' => '2. Data Collected',
+        'section2_body' => 'We collect the following data: email address, last name, first name, login history, questionnaire activities and quiz results.',
+        'section3_title' => '3. Purposes of Processing',
+        'section3_body' => 'Your data is processed for: authentication and account management, tracking your activities on the platform, and service improvement.',
+        'section4_title' => '4. Legal Basis',
+        'section4_body' => 'Processing is based on your consent at registration and on the platform\'s legitimate interest in security.',
+        'section5_title' => '5. Retention Period',
+        'section5_body' => 'Your data is kept for the duration of active use of your account. In case of prolonged inactivity (180 days), the account may be archived.',
+        'section6_title' => '6. Your Rights',
+        'section6_body' => 'Under GDPR, you have the rights of access, rectification, erasure, and data portability. To exercise these rights, contact the platform administrator.',
+        'section7_title' => '7. Cookies',
+        'section7_body' => 'The application uses only technical cookies necessary for operation (session, preferences). No advertising or tracking cookies are used.',
+        'footer_link' => 'Privacy Policy',
     ],
 
     'error' => [

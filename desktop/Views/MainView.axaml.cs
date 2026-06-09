@@ -475,6 +475,7 @@ public partial class MainView : UserControl
         // User menu
         TxtThemeToggle.Text = _isDarkTheme ? loc.T("user_menu.light_theme") : loc.T("user_menu.dark_theme");
         TxtLanguageToggle.Text = loc.T("user_menu.language");
+        TxtGdprFooter.Text = loc.T("gdpr.button");
         TxtLogout.Text = loc.T("user_menu.logout");
         TxtAdmin.Text = loc.T("admin.btn_admin");
         TxtAdminUsers.Text = loc.T("admin.btn_users");
@@ -584,6 +585,29 @@ public partial class MainView : UserControl
         LocalizationManager.Instance.ToggleLanguage();
 
         SaveUserPreferences();
+    }
+
+    private async void BtnGdpr_Click(object? sender, Avalonia.Input.PointerPressedEventArgs e)
+    {
+        var loc = LocalizationManager.Instance;
+        var topLevel = TopLevel.GetTopLevel(this);
+        var dialog = new ContentDialog
+        {
+            Title = loc.T("gdpr.title"),
+            Content = new ScrollViewer
+            {
+                MaxHeight = 420,
+                Content = new TextBlock
+                {
+                    Text = loc.T("gdpr.content"),
+                    TextWrapping = Avalonia.Media.TextWrapping.Wrap,
+                    FontSize = 13,
+                    Padding = new Avalonia.Thickness(4)
+                }
+            },
+            CloseButtonText = loc.T("common.ok")
+        };
+        await dialog.ShowAsync(topLevel);
     }
 
     private void LoadUserPreferences()

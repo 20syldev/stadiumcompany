@@ -252,6 +252,28 @@ return [
         'message' => 'Ce site utilise des cookies pour vous offrir la meilleure expérience. En continuant, vous acceptez notre utilisation des cookies.',
         'accept' => 'Accepter',
         'decline' => 'Refuser',
+        'learn_more' => 'En savoir plus',
+    ],
+
+    'privacy' => [
+        'title' => 'Politique de confidentialité',
+        'back' => 'Retour',
+        'subtitle' => 'POLITIQUE DE CONFIDENTIALITÉ — STADIUM COMPANY',
+        'section1_title' => '1. Responsable du traitement',
+        'section1_body' => 'Stadium Company est le responsable du traitement de vos données personnelles.',
+        'section2_title' => '2. Données collectées',
+        'section2_body' => 'Nous collectons les données suivantes : adresse e-mail, nom, prénom, historique de connexion, activités liées aux questionnaires et résultats de quiz.',
+        'section3_title' => '3. Finalités du traitement',
+        'section3_body' => 'Vos données sont traitées pour : l\'authentification et la gestion de votre compte, le suivi de vos activités sur la plateforme, et l\'amélioration du service.',
+        'section4_title' => '4. Base légale',
+        'section4_body' => 'Le traitement repose sur votre consentement lors de l\'inscription et sur l\'intérêt légitime de la plateforme pour la sécurité.',
+        'section5_title' => '5. Durée de conservation',
+        'section5_body' => 'Vos données sont conservées pendant toute la durée d\'utilisation active de votre compte. En cas d\'inactivité prolongée (180 jours), le compte peut être archivé.',
+        'section6_title' => '6. Vos droits',
+        'section6_body' => 'Conformément au RGPD, vous disposez des droits d\'accès, de rectification, d\'effacement et de portabilité de vos données. Pour exercer ces droits, contactez l\'administrateur de la plateforme.',
+        'section7_title' => '7. Cookies',
+        'section7_body' => 'L\'application utilise uniquement des cookies techniques nécessaires au fonctionnement (session, préférences). Aucun cookie publicitaire ou de traçage n\'est utilisé.',
+        'footer_link' => 'Politique de confidentialité',
     ],
 
     'error' => [
