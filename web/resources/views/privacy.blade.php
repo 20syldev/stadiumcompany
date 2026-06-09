@@ -17,11 +17,11 @@
         <div class="mb-8">
             @auth
                 <a href="{{ route('dashboard') }}" class="text-sm hover:underline" style="color: var(--color-text-tertiary);">
-                    ← {{ __('messages.privacy.back') }}
+                    <svg class="inline w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>{{ __('messages.privacy.back') }}
                 </a>
             @else
                 <a href="{{ route('login') }}" class="text-sm hover:underline" style="color: var(--color-text-tertiary);">
-                    ← {{ __('messages.privacy.back') }}
+                    <svg class="inline w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>{{ __('messages.privacy.back') }}
                 </a>
             @endauth
         </div>
