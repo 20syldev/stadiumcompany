@@ -29,6 +29,7 @@
   "main.new_questionnaire": "New questionnaire",
   "main.tab_mine": "My questionnaires",
   "main.tab_published": "Published questionnaires",
+  "main.filter_all_difficulties": "All difficulties",
 
   "main.action_play": "Play",
   "main.action_edit": "Edit",
@@ -216,6 +217,34 @@
   "pdf.users_status_active": "Active",
   "pdf.users_status_archived": "Archived",
   "admin.export_pdf_users": "Export PDF",
+
+  "editor.difficulty": "Difficulty level",
+  "editor.no_difficulty": "None",
+
+  "difficulty.title": "Difficulty Levels",
+  "difficulty.add": "Add level",
+  "difficulty.add_title": "New difficulty level",
+  "difficulty.edit_title": "Edit level",
+  "difficulty.label": "Label",
+  "difficulty.label_placeholder": "E.g.: Easy, Hard...",
+  "difficulty.position": "Position (display order)",
+  "difficulty.confirm_delete_title": "Delete level",
+  "difficulty.confirm_delete_message": "Delete level \"{0}\"?",
+  "difficulty.confirm_delete_in_use": "{0} questionnaire(s) use this level. They will lose this information.",
+  "difficulty.count": "{0} level(s)",
+  "difficulty.no_levels": "No difficulty levels.",
+  "difficulty.col_id": "ID",
+  "difficulty.col_label": "Label",
+  "difficulty.col_position": "Position",
+
+  "stats.title": "Statistics",
+  "stats.theme_col": "Theme",
+  "stats.count_col": "Questionnaires",
+  "stats.total": "Total: {0} questionnaire(s)",
+  "stats.no_data": "No data.",
+
+  "admin.btn_difficulty": "Difficulty Levels",
+  "admin.btn_statistics": "Statistics",
 
   "gdpr.button": "Privacy Policy (GDPR)",
   "gdpr.title": "Privacy Policy",
