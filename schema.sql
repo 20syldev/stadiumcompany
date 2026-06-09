@@ -120,8 +120,26 @@ CREATE TABLE question_feedbacks (
     CONSTRAINT fk_feedback_question FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
 );
 
+-- Difficulty levels table (evolvable list managed by the admin without developer intervention)
+CREATE TABLE difficulty_levels (
+    id       SERIAL PRIMARY KEY,
+    label    VARCHAR(50) NOT NULL UNIQUE,
+    position INT NOT NULL DEFAULT 0
+);
+GRANT ALL PRIVILEGES ON TABLE difficulty_levels TO stadiumcompany;
+GRANT USAGE, SELECT ON SEQUENCE difficulty_levels_id_seq TO stadiumcompany;
+
+-- Add nullable difficulty level to questionnaires (ON DELETE SET NULL: deleting a level won't delete questionnaires)
+ALTER TABLE questionnaires
+    ADD COLUMN difficulty_level_id INT,
+    ADD CONSTRAINT fk_questionnaire_difficulty
+        FOREIGN KEY (difficulty_level_id) REFERENCES difficulty_levels(id)
+        ON DELETE SET NULL;
+
 -- Indexes
 CREATE INDEX idx_questionnaire_theme ON questionnaires(theme_id);
+CREATE INDEX idx_difficulty_levels_position ON difficulty_levels(position);
+CREATE INDEX idx_questionnaire_difficulty ON questionnaires(difficulty_level_id);
 CREATE INDEX idx_questionnaire_user ON questionnaires(user_id);
 CREATE INDEX idx_questionnaire_published ON questionnaires(published);
 CREATE INDEX idx_question_questionnaire ON questions(questionnaire_id);
